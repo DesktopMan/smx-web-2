@@ -1,0 +1,49 @@
+:root{
+  --dark-1: #17171a;
+  --dark-2: #212226;
+  --dark-3: #383838;
+}
+
+
+*{
+  font-family: Verdana, Arial, sans-serif;
+}
+body{
+  background-color: var(--dark-2);
+  color: white;
+}
+a{
+  color: white;
+  text-decoration: underline;
+}
+a:hover{
+  background-color: darkslateblue;
+}
+
+/* Tagify */
+.tagify{
+  font-size: 15px;
+  display: flex;
+  min-width: 210px;
+  max-width: fit-content;
+}
+.tagify > tag{
+  margin: 5px;
+  padding: 10px;
+  border-radius: 15px;
+  background-color: rgb(60, 60, 60);
+  border: solid 1px dimgrey;
+  min-width: fit-content;
+
+  height: 15px;
+  
+}
+.tagify > span{
+  padding: 10px;
+  margin: 5px;
+  width: 100%;
+  height: 15px;
+
+  border: solid 1px dimgrey;
+  border-radius: 10px;
+}
