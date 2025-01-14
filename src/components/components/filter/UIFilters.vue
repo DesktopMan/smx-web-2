@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const name = i.getAttribute("id");
         if(main_table && name){
           let element;
-          if (name == "hidePerfect" || name == "hideNonPerfect" || name == "hideStepType") {
+          if (name == "hidePerfect" || name == "hideNonPerfect" || name == "hideHolds") {
             if (name == "hidePerfect") {
               const allNames = ["perfect1", "perfect2"];
               for (const i of allNames) {
@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
               }
             }
-            else if(name == "hideStepType") {
+            else if(name == "hideHolds") {
               const allNames = ["green", "yellow", "red"];
               for (const i of allNames) {
                 element = main_table.getElementsByClassName(i) as HTMLCollectionOf<HTMLElement>;
@@ -160,8 +160,8 @@ document.addEventListener("DOMContentLoaded", () => {
       <div class="component" id="hideNonPerfect">
         <p>Non-Perfect</p>
       </div>
-      <div class="component" id="hideStepType">
-        <p>Step Type</p>
+      <div class="component" id="hideHolds">
+        <p>Holds</p>
       </div>
       <div class="component" id="dataAmount">
         <input type="number" name="dataLength" id="dataLength" value="100" min="1" max="100">
