@@ -4,6 +4,7 @@
 import { sendRequest } from '../main/TableRow.vue';
 import Tagify from '../../../assets/tagify/src/tagify.js'
 import { babelParse } from 'vue/compiler-sfc';
+import { after } from 'node:test';
 
 document.addEventListener('DOMContentLoaded', () => {
   //#region Code for showing and hiding filters
@@ -110,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   //#region  Variables for parameters and tagging system
   const tags = Array.from(document.getElementsByClassName('tags') as HTMLCollectionOf<HTMLInputElement>);
-    const fullTags = Array.from(document.getElementsByClassName('tagify__input') as HTMLCollectionOf<HTMLInputElement>)
+  const fullTags = Array.from(document.getElementsByClassName('tagify__input') as HTMLCollectionOf<HTMLInputElement>)
   const datetimeInputs = Array.from(document.getElementsByName('created_at') as HTMLCollectionOf<HTMLInputElement>);
     const dataLength = document.getElementById("dataLength") as HTMLInputElement
     const group_input = document.getElementById('group-by') as HTMLInputElement
@@ -292,8 +293,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
   
   //#region Placeholders
-  const spans = Array.from(document.querySelectorAll('span') as HTMLCollectionOf<HTMLInputElement>)
-  
+  const tagFields = Array.from(document.querySelectorAll('span.tagify__input') as HTMLCollectionOf<HTMLInputElement>)
+  for(const t of tagFields){
+    t.classList.add('placeholder')
+
+    t.addEventListener("click", ()=>{
+      t.classList.remove('placeholder')
+    })
+    t.addEventListener("blur", ()=>{
+      t.classList.add('placeholder')
+    })
+  }
+  /*
     for (const element of spans){
       const sibling = element.parentElement?.nextSibling as HTMLInputElement
       element.innerHTML = sibling.getAttribute("placeholder")
@@ -310,7 +321,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         
       })
-    }
+    }*/
   //#endregion
 
 
