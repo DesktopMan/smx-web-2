@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   //#region  Variables for parameters and tagging system
   const tags = Array.from(document.getElementsByClassName('tags') as HTMLCollectionOf<HTMLInputElement>);
-  const fullTags = Array.from(document.getElementsByClassName('tagify__input') as HTMLCollectionOf<HTMLInputElement>)
+  const fullTags = Array.from(document.querySelectorAll('input.tagify__input') as HTMLCollectionOf<HTMLInputElement>)
   const datetimeInputs = Array.from(document.getElementsByName('created_at') as HTMLCollectionOf<HTMLInputElement>);
     const dataLength = document.getElementById("dataLength") as HTMLInputElement
     const group_input = document.getElementById('group-by') as HTMLInputElement
