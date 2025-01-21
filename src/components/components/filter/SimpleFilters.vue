@@ -3,6 +3,7 @@
 <script setup lang="ts">
 import { sendRequest } from '../main/TableRow.vue';
 import Tagify from '../../../assets/tagify/src/tagify.js'
+import { babelParse } from 'vue/compiler-sfc';
 
 document.addEventListener('DOMContentLoaded', () => {
   //#region Code for showing and hiding filters
@@ -109,15 +110,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   //#region  Variables for parameters and tagging system
   const tags = Array.from(document.getElementsByClassName('tags') as HTMLCollectionOf<HTMLInputElement>);
+    const fullTags = Array.from(document.getElementsByClassName('tagify__input') as HTMLCollectionOf<HTMLInputElement>)
   const datetimeInputs = Array.from(document.getElementsByName('created_at') as HTMLCollectionOf<HTMLInputElement>);
     const dataLength = document.getElementById("dataLength") as HTMLInputElement
+    const group_input = document.getElementById('group-by') as HTMLInputElement
 
   const qid = document.getElementById('q') as HTMLElement;
   let q: Array<object> = [];
 
   // Adds Tagify to each tag-input, and eventListener for changes
   for (const input of tags){
-    new Tagify(input, {
+    const tagify = new Tagify(input, {
     delimiters:",",
     pattern: null,
     mode: null,
@@ -129,13 +132,42 @@ document.addEventListener('DOMContentLoaded', () => {
     mixTagsInterpolator: ['[[', ']]'],
     trim: true,
     pasteAsTags: true,
-    focusable: true
+    focusable: true,
   })
 
     input.addEventListener("change", function(){
       updateParams();
   });
   }
+
+  const tagifyGroup = new Tagify(group_input, {
+    delimiters:",",
+    pattern: null,
+    mode: null,
+    tagTextProp: group_input.getAttribute("name"),
+    placeholder: group_input.getAttribute("placeholder"),
+    maxTags: Infinity,
+    duplicates: false,
+    userInput: true,
+    mixTagsInterpolator: ['[[', ']]'],
+    trim: true,
+    pasteAsTags: true,
+    focusable: true,
+
+    enforceWhitelist: false,
+    whitelist: ["gamer_id", "song_chart_id"],
+    dropdown: {
+      enabled: 0,
+      maxItems: 7,
+      position: "input",
+      closeOnSelect: false
+    }
+  })
+
+  group_input.addEventListener("change", function(){
+    updateParams();
+  })
+
   // eventListener for date-time inputs (they don't use tags)
   for (const input of datetimeInputs){
     input.addEventListener("change", function(){
@@ -145,10 +177,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Updates parameters
   function updateParams(){
+    let skip = q["_skip"]
     q = {}; // Resets 'q' every time function is called
 
     // Loops through each input field to collect the values
-    for (const input of tags){
+    for (const input of fullTags){
       // Checks if value is not empty
       if (input.value.trim() !== ""){
         let finalValue = {};
@@ -247,6 +280,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
   // Updates the placeholder text display
+  q["_skip"] = skip
   let finished = JSON.stringify(q)
   finished = finished.slice(1, -1)
   qid.innerHTML = finished
@@ -256,6 +290,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   //#endregion
 
+  
   //#region Placeholders
   const spans = Array.from(document.querySelectorAll('span') as HTMLCollectionOf<HTMLInputElement>)
   
@@ -277,6 +312,7 @@ document.addEventListener('DOMContentLoaded', () => {
       })
     }
   //#endregion
+
 
   //#region Clear-button
   const clearButton = document.getElementById('clear-button') as HTMLButtonElement
@@ -383,6 +419,14 @@ function sleep(ms){
           <button class="exit">x</button>
         </div>
       </div>
+
+      <div id="grouping">
+        <input type="text" name="_group_by" id="group-by" placeholder="Grouping" class="tagify__input">
+        <div class="flex-col">
+          <button id="gradeButton">?</button>
+          <button class="exit">x</button>
+        </div>
+      </div>
     </div>
     
     <div class="select-filters">
@@ -396,6 +440,7 @@ function sleep(ms){
         <option value="scoreInput">Score</option>
         <option value="gradeInput">Grade</option>
         <option value="chartInput">Difficulty</option>
+        <option value="grouping">Grouping</option>
       </select>
     </div>
     
@@ -442,11 +487,14 @@ div{
   font-size: 20px;
 
 }
-.tags{
-  display: none;
+.tags, #group-by{
+  opacity: 0;
+  position: absolute;
+  pointer-events: none;
+  z-index: -1;
 }
 
-input{
+/*input{
   width: 210px;
   margin-right: 5px;
   padding: 5px;
@@ -454,8 +502,9 @@ input{
   border: solid 1px dimgrey;
   border-radius: 10px;
   color: darkgrey;
-}
+}*/
 input::placeholder{
+  opacity: 1 !important;
   color: darkgrey;
 }
 button{
