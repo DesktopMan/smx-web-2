@@ -199,10 +199,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if(parseInt(value) == value){
               value = parseInt(value)
             }
-            finalValue = value
+            if(!Array.isArray(q[key])){
+              q[key] = []
+            }
             q[key].push(value)
           }
           else{
+            
             q[key] = finalValue
           }
           
