@@ -349,6 +349,7 @@ document.addEventListener('DOMContentLoaded', () => {
       e.value = null
     }
     qid.innerHTML = ""
+    updateUrl("q", "")
   })
   //#endregion
 
