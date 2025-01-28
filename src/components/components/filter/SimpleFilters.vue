@@ -6,6 +6,7 @@ import Tagify from '../../../assets/tagify/src/tagify.js'
 import { babelParse } from 'vue/compiler-sfc';
 import { after } from 'node:test';
 import { url } from 'inspector';
+import { encode } from 'punycode';
 
 document.addEventListener('DOMContentLoaded', () => {
   //#region Code for showing and hiding filters
@@ -231,6 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
           }
 
           if(JSON.stringify(finalValue) === '{}'){
+            value = encodeURIComponent(value)
             if(parseInt(value) == value){
               value = parseInt(value)
             }
@@ -240,8 +242,7 @@ document.addEventListener('DOMContentLoaded', () => {
             q[key].push(value)
           }
           else{
-            
-            q[key] = finalValue
+            q[key] = encodeURIComponent(finalValue)
           }
           
         });
@@ -310,6 +311,7 @@ document.addEventListener('DOMContentLoaded', () => {
   for (const tag of fullTags){
     if(fullParams[tag.getAttribute("name")]){
       let value = JSON.stringify(fullParams[tag.getAttribute("name")])
+      value = decodeURIComponent(value)
       let ops = {
         '"gte":': ">=",
         '"lte":': "<=",
