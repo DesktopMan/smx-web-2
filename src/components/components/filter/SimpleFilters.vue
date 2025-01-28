@@ -5,6 +5,7 @@ import { sendRequest } from '../main/TableRow.vue';
 import Tagify from '../../../assets/tagify/src/tagify.js'
 import { babelParse } from 'vue/compiler-sfc';
 import { after } from 'node:test';
+import { url } from 'inspector';
 
 document.addEventListener('DOMContentLoaded', () => {
   //#region Code for showing and hiding filters
@@ -19,7 +20,8 @@ document.addEventListener('DOMContentLoaded', () => {
     'artistInput',
     'scoreInput',
     'gradeInput',
-    'chartInput'
+    'chartInput',
+    'grouping'
   ]
   const startInputs = [
     allInputs[1],
@@ -63,9 +65,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Shows filters
   function showInputs(element: HTMLElement) {
     element.style.display = 'flex'
-    /*for (const i of element.children as HTMLCollectionOf<HTMLElement>) {
-      i.style.display = 'flex'
-    }*/
     const id = element.id
     if (selector) {
       const options = Array.from(selector.children as HTMLCollectionOf<HTMLElement>)
@@ -108,6 +107,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     })
   }
+
+  //#endregion
 
   //#region  Variables for parameters and tagging system
   const tags = Array.from(document.getElementsByClassName('tags') as HTMLCollectionOf<HTMLInputElement>);
@@ -284,14 +285,46 @@ document.addEventListener('DOMContentLoaded', () => {
   q["_skip"] = skip
   let finished = JSON.stringify(q)
   finished = finished.slice(1, -1)
+
+  // Updates URL and sends request
+  let urlReady = finished.toString()
+  updateUrl("q", urlReady)
+  console.log(urlReady)
+
   qid.innerHTML = finished
-  const updateEvent = new CustomEvent("updateTable")
+  const updateEvent = new CustomEvent("updateTable", {
+    detail: {
+      query: finished 
+    }
+  })
   document.dispatchEvent(updateEvent)
 
   }
   //#endregion
 
-  
+  //#region Update fields from from URL
+  let fullParams = getQueryParams("q")
+  fullParams = "{"+ fullParams+ "}"
+  fullParams = JSON.parse(fullParams)
+
+  for (const tag of fullTags){
+    if(fullParams[tag.getAttribute("name")]){
+      let sibling
+      const parent = tag.parentNode
+      const children = Array.from(parent.children)
+      for (const child of children){
+        if (child.classList.contains("tagify")){
+          const newChild = child.querySelector('span')
+          newChild.focus()
+          newChild.innerHTML = fullParams[tag.getAttribute("name")]
+          newChild.blur()
+        }
+      }
+    }
+  }
+
+  //#endregion
+
   //#region Placeholders
   const tagFields = Array.from(document.querySelectorAll('span.tagify__input') as HTMLCollectionOf<HTMLInputElement>)
   for(const t of tagFields){
@@ -304,31 +337,12 @@ document.addEventListener('DOMContentLoaded', () => {
       t.classList.add('placeholder')
     })
   }
-  /*
-    for (const element of spans){
-      const sibling = element.parentElement?.nextSibling as HTMLInputElement
-      element.innerHTML = sibling.getAttribute("placeholder")
-      element.style.color = "darkgrey"
-
-      element.addEventListener("click", () => {
-        element.innerHTML = ""
-        element.style.color = "white"
-      })
-      element.addEventListener("blur", () => {
-        sleep(25).then(() => {
-          element.innerHTML = sibling.getAttribute("placeholder")
-          element.style.color = "darkgrey"
-        })
-        
-      })
-    }*/
   //#endregion
-
 
   //#region Clear-button
   const clearButton = document.getElementById('clear-button') as HTMLButtonElement
   clearButton.addEventListener("click", () => {
-    for (const e of tags){
+    for (const e of fullTags  ){
       e.value = ""
     }
     for (const e of datetimeInputs){
@@ -346,6 +360,21 @@ function sleep(ms){
   return new Promise(resolve => setTimeout(resolve, ms))
 }
 //#endregion
+
+//#region URL Query Return
+function getQueryParams(key){
+    const url = new URL(window.location.href)
+    return url.searchParams.get(key)
+  }
+
+  function updateUrl(key, value){
+    const url = new URL(window.location.href)
+    url.searchParams.set(key, value)
+
+    window.history.replaceState({}, "", url.toString())
+  }
+//#endregion
+
 
 </script>
 
@@ -505,7 +534,7 @@ div{
   z-index: -1;
 }
 
-/*input{
+input{
   width: 210px;
   margin-right: 5px;
   padding: 5px;
@@ -513,10 +542,10 @@ div{
   border: solid 1px dimgrey;
   border-radius: 10px;
   color: darkgrey;
-}*/
+}
 input::placeholder{
   opacity: 1 !important;
-  color: darkgrey;
+  color: darkgrey !important;
 }
 button{
   width: 20px;

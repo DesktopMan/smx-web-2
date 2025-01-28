@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
                 }
             }
             else if(e.getAttribute('id') === "next-page" && page >= 1 && pageIsFilled){
-                skip = (page) * length;
+                skip = page * length;
                 page++;
                 q['_skip'] = skip;
             }
@@ -43,7 +43,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
             document.dispatchEvent(updateEvent)
 
             pageDisplay.innerHTML = "Page " + page
-            console.log(skip)
         })
     }
 
@@ -62,7 +61,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
         else{
             pageIsFilled = true
         }
-        console.log(pageIsFilled)
     })
 })
 </script>

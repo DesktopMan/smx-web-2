@@ -37,8 +37,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const qid = document.getElementById('q') as HTMLElement
 
     //#region Update Data
-  document.addEventListener("updateTable", () => {
-    fetchData(qid.getHTML().toString())
+  document.addEventListener("updateTable", (event) => {
+    fetchData(event.detail.query)
   })
 
   //#endregion
