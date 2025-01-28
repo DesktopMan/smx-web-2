@@ -305,7 +305,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   //#region Update fields from from URL
   let fullParams = getQueryParams("q")
-  fullParams = "{"+ fullParams+ "}"
+  fullParams = "{" + fullParams + "}"
   fullParams = JSON.parse(fullParams)
 
   for (const tag of fullTags){
