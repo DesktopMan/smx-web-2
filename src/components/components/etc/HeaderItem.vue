@@ -5,15 +5,16 @@ import { error } from 'console';
 document.addEventListener("DOMContentLoaded", ()=>{
   const refresh = document.getElementById("refresh-button")
   let automaticUpdate = false
-  let query = "https://api.smx.573.no/scores"
+  let url = "https://api.smx.573.no/scores"
+  let q = decodeURIComponent(getQueryParams("q"))
   let socket
 
   document.addEventListener("updateTable", (event) => {
-    if (event.detail.query === query){
+    if (event.detail.query == q){
 
     } 
     else{
-      query = event.detail.query
+      q = event.detail.query
       if(socket){
         socket.close()
         socket = null
@@ -24,10 +25,10 @@ document.addEventListener("DOMContentLoaded", ()=>{
   refresh.addEventListener("click", ()=>{
     if (!automaticUpdate){
       automaticUpdate = true
-      socket = new WebSocket(query)
+      socket = new WebSocket(url)
 
       socket.onopen = function(){
-        console.log("Socket opened to: "+ query)
+        console.log("Socket opened to: "+ url)
       }
       socket.onclose = function(){
         console.log("Socket closed.")
@@ -36,9 +37,12 @@ document.addEventListener("DOMContentLoaded", ()=>{
         console.log("Socket error: "+ error)
       }
       socket.onmessage = function(){
+        if (q == ""){
+          q = null
+        }
         const updateEvent = new CustomEvent("updateTable", {
           detail: {
-            query: query 
+            query: q
           }
         })
         document.dispatchEvent(updateEvent)
@@ -54,6 +58,11 @@ document.addEventListener("DOMContentLoaded", ()=>{
     }
   })
 })
+
+function getQueryParams(key){
+    const url = new URL(window.location.href)
+    return url.searchParams.get(key)
+  }
 
 </script>
 
