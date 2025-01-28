@@ -288,8 +288,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Updates URL and sends request
   let urlReady = finished.toString()
+
   updateUrl("q", urlReady)
-  console.log(urlReady)
 
   qid.innerHTML = finished
   const updateEvent = new CustomEvent("updateTable", {
@@ -309,6 +309,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
   for (const tag of fullTags){
     if(fullParams[tag.getAttribute("name")]){
+      let value = JSON.stringify(fullParams[tag.getAttribute("name")])
+      let ops = {
+        '"gte":': ">=",
+        '"lte":': "<=",
+        '"gt":': ">",
+        '"lt":': "<",
+        '"nin":': "!"
+      }
+      for (const op in ops){
+        value = value.replaceAll(op, ops[op])
+      }
+      value = value.replaceAll('"', "").replaceAll("{", "").replaceAll("}", "").replaceAll("[","").replaceAll("]","")
+
+
       const parent = tag.parentNode
       const children = Array.from(parent.children)
       for (const child of children){
@@ -316,7 +330,7 @@ document.addEventListener('DOMContentLoaded', () => {
           showInputs(parent)
           const newChild = child.querySelector('span')
           newChild.focus()
-          newChild.innerHTML = fullParams[tag.getAttribute("name")]
+          newChild.innerHTML = value
           newChild.blur()
         }
       }
