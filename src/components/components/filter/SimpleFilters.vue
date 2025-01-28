@@ -309,11 +309,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   for (const tag of fullTags){
     if(fullParams[tag.getAttribute("name")]){
-      let sibling
       const parent = tag.parentNode
       const children = Array.from(parent.children)
       for (const child of children){
         if (child.classList.contains("tagify")){
+          showInputs(parent)
           const newChild = child.querySelector('span')
           newChild.focus()
           newChild.innerHTML = fullParams[tag.getAttribute("name")]
