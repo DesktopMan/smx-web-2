@@ -31,7 +31,11 @@ async function fetchData(q: any) {
   })
   document.dispatchEvent(arrayLength)
 }
-fetchData(null)
+const query = getQueryParams("q")
+if (query == "" || !query)
+{
+  fetchData(null)
+}
 
 document.addEventListener("DOMContentLoaded", () => {
   const qid = document.getElementById('q') as HTMLElement
@@ -60,6 +64,11 @@ document.addEventListener("DOMContentLoaded", () => {
     document.dispatchEvent(clearEvent)
   })
 })
+
+function getQueryParams(key){
+    const url = new URL(window.location.href)
+    return url.searchParams.get(key)
+  }
 
 </script>
 
