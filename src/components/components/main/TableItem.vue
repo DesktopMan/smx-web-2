@@ -24,11 +24,23 @@ document.addEventListener('DOMContentLoaded', () => {
       q['_order'] = 'asc'
     }
 
-    qid.innerHTML = JSON.stringify(q).slice(1,-1)
-    const updateEvent = new CustomEvent("updateTable")
+    let finished = JSON.stringify(q).slice(1,-1)
+    qid.innerHTML = finished
+    const updateEvent = new CustomEvent("updateTable", {
+      detail: {
+        query: finished 
+      }
+    })
     document.dispatchEvent(updateEvent)
   }
 })
+
+function updateUrl(key, value){
+    const url = new URL(window.location.href)
+    url.searchParams.set(key, value)
+
+    window.history.replaceState({}, "", url.toString())
+  }
 
 </script>
 

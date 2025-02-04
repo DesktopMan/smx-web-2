@@ -35,6 +35,8 @@ document.addEventListener("DOMContentLoaded", ()=>{
       }
       socket.onclose = function(){
         console.log("Socket closed.")
+        refresh.style.backgroundColor = 'hsl(120, 35%, 30%)'
+        refresh.style.color = 'white'
       }
       socket.onerror = function(error){
         console.log("Socket error: "+ error)
@@ -58,8 +60,6 @@ document.addEventListener("DOMContentLoaded", ()=>{
         socket.close()
         socket = null
       }
-      refresh.style.backgroundColor = 'hsl(120, 35%, 30%)'
-      refresh.style.color = 'white'
     }
   })
 })
