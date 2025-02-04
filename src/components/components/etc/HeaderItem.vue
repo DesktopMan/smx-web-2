@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { error } from 'console';
+import { ref } from 'vue';
 
 
 document.addEventListener("DOMContentLoaded", ()=>{
@@ -26,6 +27,8 @@ document.addEventListener("DOMContentLoaded", ()=>{
     if (!automaticUpdate){
       automaticUpdate = true
       socket = new WebSocket(url)
+      refresh.style.backgroundColor = 'lightgreen'
+      refresh.style.color = 'black'
 
       socket.onopen = function(){
         console.log("Socket opened to: "+ url)
@@ -55,6 +58,8 @@ document.addEventListener("DOMContentLoaded", ()=>{
         socket.close()
         socket = null
       }
+      refresh.style.backgroundColor = 'hsl(120, 35%, 30%)'
+      refresh.style.color = 'white'
     }
   })
 })
@@ -84,6 +89,7 @@ h1{
   margin-right: 30px;
 }
 button{
+  transition: 1s;
   margin: 20px;
   margin-right: 0px;
   padding: 10px;
@@ -96,6 +102,7 @@ button{
   color: white;
 }
 button:hover{
-  background-color: hsl(190, 35%, 45%);
+  padding: 10px 20px;
+  transition: 1s;
 }
 </style>
