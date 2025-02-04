@@ -14,9 +14,14 @@ export async function sendRequest(q: string | null) {
   }
   return data
 }
+
+export function formatDate(timestamp){
+  return new Date(timestamp).toLocaleString()
+}
 </script>
 
 <script setup lang="ts">
+import { format } from 'path'
 import { sendRequest } from './TableRow.vue'
 import { ref } from 'vue'
 const rows = ref([])
@@ -63,6 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const clearEvent = new CustomEvent("clearEvent")
     document.dispatchEvent(clearEvent)
   })
+
 })
 
 function getQueryParams(key){
@@ -81,7 +87,7 @@ function getQueryParams(key){
 
 <template>
   <tr v-for="(row, index) in rows" :key="index">
-    <td class="datetime created_at">{{ row.created_at }}</td>
+    <td class="datetime created_at">{{ formatDate(row.created_at) }}</td>
     <td class="profile gamer">
       <div class="subdiv">
         <div class="picture_path">
