@@ -37,9 +37,13 @@ document.addEventListener('DOMContentLoaded', ()=>{
             }
 
             
-            
-            qid.innerHTML = JSON.stringify(q).slice(1,-1)
-            const updateEvent = new CustomEvent("updateTable")
+            let finished = JSON.stringify(q).slice(1,-1)
+            qid.innerHTML = finished
+            const updateEvent = new CustomEvent("updateTable", {
+              detail: {
+                query: finished 
+              }
+            })
             document.dispatchEvent(updateEvent)
 
             pageDisplay.innerHTML = "Page " + page
