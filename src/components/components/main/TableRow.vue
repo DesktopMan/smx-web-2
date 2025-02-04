@@ -16,7 +16,16 @@ export async function sendRequest(q: string | null) {
 }
 
 export function formatDate(timestamp){
-  return new Date(timestamp).toLocaleString()
+  var date = new Date(timestamp)
+
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  const hour = String(date.getHours()).padStart(2, '0')
+  const minute = String(date.getMinutes()).padStart(2, '0')
+
+  const returner = `${year}-${month}-${day} ${hour}:${minute}`
+  return returner
 }
 </script>
 
@@ -24,6 +33,7 @@ export function formatDate(timestamp){
 import { format } from 'path'
 import { sendRequest } from './TableRow.vue'
 import { ref } from 'vue'
+import { time } from 'console'
 const rows = ref([])
 
 async function fetchData(q: any) {
