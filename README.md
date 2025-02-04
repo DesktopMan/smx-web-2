@@ -1,5 +1,26 @@
 # smx-frontend
+A short tutorial on how to use the browser
 
+## Using the tag fields
+The browser uses tag fields as the main user input fields. There is a dropdown-menu to the right, where you can select the fields you want to show.
+
+When entering tags, you can enter regular tags and operational tags. When searching with a regular tag, the API will return data that matches that single tag. Operational tags return data that corresponds with those tags.
+
+There are five operational symbols to use in the tags:
+```
+Greater than or equal to:  >=
+Less than or equal to:     <=
+Greater than:              >
+Less than:                 <
+Not in:                    !
+```
+These are put in front of the main value of the tag. E.g. requesting scores with the query `<100` will return scores less than a hundred.
+When operational tags are present, you can't use regular tags.
+
+
+
+
+# Setup
 This template should help get you started developing with Vue 3 in Vite.
 
 ## Recommended IDE Setup
