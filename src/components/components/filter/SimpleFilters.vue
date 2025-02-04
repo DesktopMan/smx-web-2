@@ -9,7 +9,9 @@ import { url } from 'inspector';
 import { encode } from 'punycode';
 
 document.addEventListener('DOMContentLoaded', () => {
-  updateUrl('q', '')
+  if (!getQueryParams('q')){
+    updateUrl('q', '')
+  }
   //#region Code for showing and hiding filters
 
   const hideButton = Array.from(document.getElementsByClassName('exit') as HTMLCollectionOf<HTMLElement>)
@@ -243,7 +245,8 @@ document.addEventListener('DOMContentLoaded', () => {
             q[key].push(value)
           }
           else{
-            q[key] = encodeURIComponent(finalValue)
+            q[key] = finalValue
+            console.log(q[key])
           }
           
         });
