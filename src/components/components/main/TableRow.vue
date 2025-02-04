@@ -84,9 +84,11 @@ function getQueryParams(key){
     <td class="datetime created_at">{{ row.created_at }}</td>
     <td class="profile gamer">
       <div class="subdiv">
-        <img class="gamer.picture_path"
+        <div class="picture_path">
+          <img class="gamer.picture_path"
              :src="'https://data.stepmaniax.com/' + row.gamer.picture_path"
-             alt="profile-picture" />
+             onerror="this.style.opacity=0"/>
+        </div>
         <p class="gamer.username">{{ row.gamer.username }}</p>
       </div>
     </td>
@@ -145,6 +147,12 @@ img {
   border-radius: 5px;
   aspect-ratio: 1;
   margin-right: 10px;
+  background-color: var(--dark-3);
+}
+.picture_path{
+  background: url("../../../assets/icon.png") no-repeat center;
+  background-size: 40px;
+  background-position: left;
 }
 .subdiv > p {
   margin-right: 5px;
