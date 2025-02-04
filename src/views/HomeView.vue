@@ -8,6 +8,7 @@ import Skip from '../components/components/main/Skip.vue';
 
 <template>
   <main>
+    <p>See websockets for automatic updates</p>
     <a href="https://github.com/DesktopMan/smx-api-docs?tab=readme-ov-file">SMX API Docs</a>
     <HeaderItem />
     <SimpleFilters />

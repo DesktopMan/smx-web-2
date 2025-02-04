@@ -9,6 +9,7 @@ import { url } from 'inspector';
 import { encode } from 'punycode';
 
 document.addEventListener('DOMContentLoaded', () => {
+  updateUrl('q', '')
   //#region Code for showing and hiding filters
 
   const hideButton = Array.from(document.getElementsByClassName('exit') as HTMLCollectionOf<HTMLElement>)
@@ -305,7 +306,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   //#region Update fields from from URL
   let fullParams = getQueryParams("q")
-  fullParams = "{" + fullParams + "}"
+  if(fullParams != null){
+    fullParams = '{' + fullParams + '}'
+  }
   fullParams = JSON.parse(fullParams)
 
   for (const tag of fullTags){
