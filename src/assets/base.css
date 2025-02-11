@@ -24,8 +24,9 @@ a:hover{
 .tagify{
   font-size: 15px;
   display: flex;
-  min-width: 210px;
-  max-width: fit-content;
+  flex-direction: row;
+  min-width: 100%;
+  flex-wrap: wrap;
 }
 .tagify > tag{
   margin: 5px;
@@ -40,7 +41,11 @@ a:hover{
 .tagify > span{
   padding: 10px;
   margin: 5px;
-  width: 100%;
+  
+  flex-grow: 1;
+  flex-shrink: 1;
+  min-width: fit-content;
+  max-width: 250px;
   height: 15px;
 
   border: solid 1px dimgrey;
@@ -74,4 +79,5 @@ a:hover{
 }
 
 @media only screen and (max-width: 1000px){
+
 }

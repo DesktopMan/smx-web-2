@@ -241,7 +241,8 @@ img {
     display: table
   }
   td{
-    width: 10vw;
+    width: 20%;
+    margin: 5%;
     overflow-y: hidden;
   }
   td.score{

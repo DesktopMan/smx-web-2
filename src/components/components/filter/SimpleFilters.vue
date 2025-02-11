@@ -307,6 +307,17 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   //#endregion
 
+  //#region namelate
+  const sideCols = Array.from(document.getElementsByClassName("inputMenu") as HTMLCollectionOf<HTMLDivElement>)
+    for (const sideCol of sideCols){
+      const parent = sideCol.parentElement
+      const div = parent.querySelector("tags")
+      if(div){
+        div.appendChild(sideCol)
+      }
+    }
+  //#endregion
+
   //#region Update fields from from URL
   let fullParams = getQueryParams("q")
   if(fullParams != null){
@@ -408,7 +419,7 @@ function getQueryParams(key){
       <div id="datetimes">
         <input type="datetime-local" name="created_at" id="dtimeFrom">
         <input type="datetime-local" name="created_at" id="dtimeTo">
-        <div class="flex-col">
+        <div class="flex-col inputMenu">
           <button id="dtimeButton">?</button>
           <button class="exit">x</button>
         </div>
@@ -416,14 +427,14 @@ function getQueryParams(key){
 
       <div id="userInput">
         <input type="text" name="gamer.username" id="username" placeholder="Username" class="tags tagify__input">
-        <div class="flex-col">
+        <div class="flex-col inputMenu">
           <button id="userButton">?</button>
           <button class="exit">x</button>
         </div>
       </div>
       <div id="idInput">
         <input type="text" name="gamer.id" id="userId" placeholder="User ID" class="tags tagify__input">
-        <div class="flex-col">
+        <div class="flex-col inputMenu">
           <button id="idButton">?</button>
           <button class="exit">x</button>
         </div>
@@ -431,14 +442,14 @@ function getQueryParams(key){
 
       <div id="songInput">
         <input type="text" name="song.title" id="song" placeholder="Song Title" class="tags tagify__input">
-        <div class="flex-col">
+        <div class="flex-col inputMenu">
           <button id="songButton">?</button>
           <button class="exit">x</button>
         </div>
       </div>
       <div id="artistInput">
         <input type="text" name="song.artist" id="artist" placeholder="Artist" class="tags tagify__input">
-        <div class="flex-col">
+        <div class="flex-col inputMenu">
           <button id="artistButton">?</button>
           <button class="exit">x</button>
         </div>
@@ -446,14 +457,14 @@ function getQueryParams(key){
 
       <div id="scoreInput">
         <input type="text" name="score" id="score" placeholder="Score" class="tags tagify__input">
-        <div class="flex-col">
+        <div class="flex-col inputMenu">
           <button id="scoreButton">?</button>
           <button class="exit">x</button>
         </div>
       </div>
       <div id="gradeInput">
         <input type="text" name="grade" id="grade" placeholder="Grade" class="tags tagify__input">
-        <div class="flex-col">
+        <div class="flex-col inputMenu">
           <button id="gradeButton">?</button>
           <button class="exit">x</button>
         </div>
@@ -477,7 +488,7 @@ function getQueryParams(key){
           <option value="full+">Full+</option>
         </select>-->
         <input type="text" name="chart.difficulty" id="difficulty" class="tags tagify__input" placeholder="Difficulty">
-        <div class="flex-col">
+        <div class="flex-col inputMenu">
           <button id="chartButton">?</button>
           <button class="exit">x</button>
         </div>
@@ -485,7 +496,7 @@ function getQueryParams(key){
 
       <div id="grouping">
         <input type="text" name="_group_by" id="group-by" placeholder="Grouping" class="tagify__input">
-        <div class="flex-col">
+        <div class="flex-col inputMenu">
           <button id="gradeButton">?</button>
           <button class="exit">x</button>
         </div>

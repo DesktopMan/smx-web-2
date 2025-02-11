@@ -45,7 +45,6 @@ function updateUrl(key, value){
 </script>
 
 <template>
-  <h3>Table</h3>
   <div class="main-display">
     <table>
       <thead>
@@ -98,7 +97,7 @@ function updateUrl(key, value){
       </tr>
       </thead>
       <tbody>
-      <TableRow />
+        <TableRow />
       </tbody>
     </table>
   </div>
