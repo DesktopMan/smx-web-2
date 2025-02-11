@@ -1,4 +1,5 @@
 <script lang="ts">
+import icon from "../../../assets/icon.png"
 //Sends request to API
 export async function sendRequest(q: string | null) {
   let response
@@ -26,6 +27,16 @@ export function formatDate(timestamp){
 
   const returner = `${year}-${month}-${day} ${hour}:${minute}`
   return returner
+}
+
+export function profilePicture(link){
+  if(!link){
+    return icon
+  }
+  else{
+    return 'https://data.stepmaniax.com/' + link
+  }
+
 }
 </script>
 
@@ -102,8 +113,7 @@ function getQueryParams(key){
       <div class="subdiv">
         <div class="picture_path">
           <img class="gamer.picture_path"
-             :src="'https://data.stepmaniax.com/' + row.gamer.picture_path"
-             onerror="this.style.opacity=0"/>
+             :src="profilePicture(row.gamer.picture_path)" />
         </div>
         <p class="gamer.username">{{ row.gamer.username }}</p>
       </div>
@@ -163,13 +173,12 @@ img {
   border-radius: 5px;
   aspect-ratio: 1;
   margin-right: 10px;
-  background-color: var(--dark-3);
 }
-.picture_path{
+/*.picture_path{
   background: url("../../../assets/icon.png") no-repeat center;
   background-size: 40px;
   background-position: left;
-}
+}*/
 .subdiv > p {
   margin-right: 5px;
 }
