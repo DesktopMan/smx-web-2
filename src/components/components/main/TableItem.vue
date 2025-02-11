@@ -129,4 +129,10 @@ th{
   border-bottom: solid 1px var(--dark-3);
   cursor: pointer;
 }
+
+@media only screen and (max-width: 1000px){
+  tr{
+    display: none;
+  }
+}
 </style>

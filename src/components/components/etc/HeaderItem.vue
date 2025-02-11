@@ -105,4 +105,17 @@ button:hover{
   padding: 10px 20px;
   transition: 1s;
 }
+
+@media only screen and (max-width: 1000px){
+  h1{
+    font-size: 16px;
+    margin: 10px;
+    width: 100px;
+  }
+  button{
+    font-size: 12px;
+    margin: 10px;
+    height: 42px;
+  }
+}
 </style>

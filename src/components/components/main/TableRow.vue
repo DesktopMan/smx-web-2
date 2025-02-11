@@ -107,10 +107,11 @@ function getQueryParams(key){
 </script>
 
 <template>
-  <tr v-for="(row, index) in rows" :key="index">
+  <!-- PC-Layout -->
+  <tr v-for="(row, index) in rows" :key="index" id="pc-layout">
     <td class="datetime created_at">{{ formatDate(row.created_at) }}</td>
     <td class="profile gamer">
-      <div class="subdiv">
+      <div class="subdiv flex">
         <div class="picture_path">
           <img class="gamer.picture_path"
              :src="profilePicture(row.gamer.picture_path)" />
@@ -119,20 +120,19 @@ function getQueryParams(key){
       </div>
     </td>
     <td class="song">
-      <div class="subdiv">
+      <div class="subdiv flex">
         <img
           class="song.cover"
           :src="'https://data.stepmaniax.com/' + row.song.cover"
-          alt="song-cover"
         />
         <p class="song.title">{{ row.song.title }}</p>
       </div>
     </td>
     <td class="artist song.artist">{{ row.song.artist }}</td>
     <td class="difficulty chart">
-      <div class="subdiv">
-        <p class="chart.difficulty_name">{{ row.chart.difficulty_name }}</p>
-        <p class="chart.difficulty">{{ row.chart.difficulty }}</p>
+      <div class="subdiv flex">
+        <p class="chart.difficulty_name flex">{{ row.chart.difficulty_name }}</p>
+        <p class="chart.difficulty flex">{{ row.chart.difficulty }}</p>
       </div>
     </td>
     <td class="grade">{{ row.grade }}</td>
@@ -146,13 +146,38 @@ function getQueryParams(key){
     <td class="yellow">{{ row.yellow }}</td>
     <td class="red">{{ row.red }}</td>
   </tr>
+
+  <tr v-for="(row, index) in rows" :key="index" id="mobile-layout">
+    <td class="datetime created_at">{{ formatDate(row.created_at) }}</td>
+    <td class="profile gamer">
+      <div class="subdiv">
+        <div class="picture_path">
+          <img class="gamer.picture_path" :src="profilePicture(row.gamer.picture_path)">
+        </div>
+        <p class="gamer.username">
+          {{ row.gamer.username }}
+        </p>
+      </div>
+    </td>
+    <td class="song">
+      <div class="subdiv">
+        <img class="song.title" :src="'https://data.stepmaniax.com/' + row.song.cover">
+        <p class="song.title">
+          {{ row.song.title }}
+        </p>
+      </div>
+    </td>
+    <td class="score">
+      {{ row.score }}
+    </td>
+  </tr>
 </template>
 
 <style scoped>
 @import '../../../assets/base.css';
 
 
-div {
+div.flex {
   display: flex;
 }
 p {
@@ -174,11 +199,6 @@ img {
   aspect-ratio: 1;
   margin-right: 10px;
 }
-/*.picture_path{
-  background: url("../../../assets/icon.png") no-repeat center;
-  background-size: 40px;
-  background-position: left;
-}*/
 .subdiv > p {
   margin-right: 5px;
 }
@@ -202,5 +222,30 @@ img {
 }
 .red {
   color: red;
+}
+
+
+#mobile-layout{
+  display: none;
+}
+@media only screen and (max-width: 1000px){
+  #pc-layout{
+    display: none;
+  }
+
+  *{
+    font-size: 10px;
+    text-align: center;
+  }
+  #mobile-layout{
+    display: table
+  }
+  td{
+    width: 10vw;
+    overflow-y: hidden;
+  }
+  td.score{
+    text-align: left;
+  }
 }
 </style>
