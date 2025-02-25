@@ -45,6 +45,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
               }
             })
             document.dispatchEvent(updateEvent)
+            window.scrollTo({top:0, behavior: 'smooth'})
 
             pageDisplay.innerHTML = "Page " + page
         })
