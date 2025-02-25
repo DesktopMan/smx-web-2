@@ -58,9 +58,6 @@ function updateUrl(key, value){
         <th id="songDisplay" class="song displayHeader" name="h_song.title">
           Song
         </th>
-        <th id="artistDisplay" class="artist displayHeader" name="h_song.artist">
-          Artist
-        </th>
         <th id="difficultyDisplay" class="difficulty displayHeader" name="h_chart.difficulty">
           Difficulty
         </th>
@@ -93,6 +90,9 @@ function updateUrl(key, value){
         </th>
         <th id="redDisplay" class="red displayHeader" name="h_red">
           Red
+        </th>
+        <th id="pbdDisplay" class="personal_best_difference pbdHeader" name="h_pbd">
+          PB Diff
         </th>
       </tr>
       </thead>

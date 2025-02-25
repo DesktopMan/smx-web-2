@@ -142,9 +142,6 @@ document.addEventListener("DOMContentLoaded", () => {
       <div class="component" id="song">
         <p>Song</p>
       </div>
-      <div class="component" id="artist">
-        <p>Artist</p>
-      </div>
       <div class="component" id="difficulty">
         <p>Difficulty</p>
       </div>

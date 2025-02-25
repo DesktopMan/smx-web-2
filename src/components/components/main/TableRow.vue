@@ -59,7 +59,7 @@ export function formatNull(number){
   }
 }
 
-export function personalBest(score, pb, pbp){
+export function personalBest(score, pb, pbp, showNull){
   let difference
   if(score === pb){
     difference = pb - pbp
@@ -67,15 +67,18 @@ export function personalBest(score, pb, pbp){
   else{
     difference = score - pb
   }
-
-  if(difference != pb){
-    if (difference > 0){
-      return "+"+difference
+  if(difference == pb){
+    if(!showNull){
+      difference = ""
     }
     else{
-      return difference
+      difference = 0
     }
   }
+  if(difference > 0){
+    difference = "+"+difference
+  }
+  return difference
 }
 </script>
 
@@ -164,10 +167,9 @@ function getQueryParams(key){
           class="song.cover"
           :src="'https://data.stepmaniax.com/' + row.song.cover"
         />
-        <p class="song.title">{{ row.song.title }}</p>
+        <p class="song.title song.artist">{{ row.song.title }} - {{ row.song.artist }}</p>
       </div>
     </td>
-    <td class="artist song.artist">{{ row.song.artist }}</td>
     <td class="difficulty chart">
       <div class="subdiv flex">
         <p class="chart.difficulty_name flex">{{ row.chart.difficulty_name }}</p>
@@ -184,6 +186,7 @@ function getQueryParams(key){
     <td class="green">{{ row.green }}</td>
     <td class="yellow">{{ row.yellow }}</td>
     <td class="red">{{ row.red }}</td>
+    <td class="personal_best_difference">{{ personalBest(row.score, row.personal_best, row.personal_best_previous, true) }}</td>
   </tr>
 
   <!-- Mobile Layout -->
@@ -226,33 +229,10 @@ function getQueryParams(key){
         <td class="subdiv flex">
           <img src="https://cdn.discordapp.com/emojis/614203000222646278.png">
           <p class="personal_best">{{ row.personal_best }}</p>
-          <p class="personal_best_difference">{{ personalBest(row.score, row.personal_best, row.personal_best_previous) }}</p>
+          <p class="personal_best_difference">{{ personalBest(row.score, row.personal_best, row.personal_best_previous, false) }}</p>
         </td>
       </tr>
     </table>
-    <!--
-    <td class="datetime created_at">{{ formatDate(row.created_at) }}</td>
-    <td class="profile gamer">
-      <div class="subdiv">
-        <div class="picture_path">
-          <img class="gamer.picture_path" :src="profilePicture(row.gamer.picture_path)">
-        </div>
-        <p class="gamer.username">
-          {{ row.gamer.username }}
-        </p>
-      </div>
-    </td>
-    <td class="song">
-      <div class="subdiv">
-        <img class="song.title" :src="'https://data.stepmaniax.com/' + row.song.cover">
-        <p class="song.title">
-          {{ row.song.title }}
-        </p>
-      </div>
-    </td>
-    <td class="score">
-      {{ row.score }}
-    </td>-->
   </tr>
 </template>
 
@@ -275,15 +255,21 @@ tr{
 td {
   margin: 0 5px;
   height: 40px;
+  width: min-content;
+  max-width: 250px;
   padding: 5px 15px;
   text-align: left;
   border-bottom: solid 1px var(--dark-3);
+  overflow: hidden;
 }
 img {
   height: 40px;
   border-radius: 5px;
   aspect-ratio: 1;
   margin-right: 10px;
+}
+td.datetime{
+  max-width: 100px;
 }
 .subdiv > p {
   margin-right: 5px;
@@ -309,6 +295,9 @@ img {
 .red {
   color: red;
 }
+td.personal_best_difference{
+  text-align: center;
+}
 
 
 #mobile-layout{
@@ -325,6 +314,10 @@ img {
   }
   #mobile-layout{
     display: table
+  }
+  td{
+    max-width: 80vw;
+    width: 100%;
   }
   table{
     width: 90vw;
