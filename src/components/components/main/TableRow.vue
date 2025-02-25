@@ -192,46 +192,48 @@ function getQueryParams(key){
   <!-- Mobile Layout -->
   <tr v-for="(row, index) in rows" :key="index" id="mobile-layout">
     <table>
-      <tr class="datetime created_at">
-        {{ formatDate(row.created_at) }}
-      </tr>
-      <tr class="profile gamer chart">
-        <td class="subdiv flex">
-          <img class="gamer.picture_path" :src="profilePicture(row.gamer.picture_path)">
-          <p class="gamer.username">{{ row.gamer.username }}</p>
-          <p class="chart">{{ row.chart.difficulty_name }} {{ row.chart.difficulty }}</p>
-        </td>
-      </tr>
-      <tr class="song">
-        <td class="subdiv flex">
-          <img class="song.cover" :src="profilePicture(row.song.cover)">
-          <p class="song.title">{{ row.song.title }} - {{ row.song.artist }}</p>
-        </td>
-      </tr>
-      <tr class="data_1">
-        <td class="subdiv flex">
-          <img class="grade cleared" :src="grade(row.grade, row.cleared)">
-          <p class="score">
-            <a target="_blank" :href="'https://scores.stepmaniax.com/' +  row._id ">{{ row.score }}</a>
-          </p>
-          <p>|</p>
-          <p class="perfect1">{{ row.perfect1 }}</p>
-          <p class="perfect2">{{ row.perfect2 }}</p>
-          <p class="early">{{ row.early }}</p>
-          <p class="late">{{ row.late }}</p>
-          <p class="miss">{{ formatNull(row.miss) }}</p>
-          <p class="green">{{ row.green }}</p>
-          <p class="yellow">{{ row.yellow }}</p>
-          <p class="red">{{ row.red }}</p>
-        </td>
-      </tr>
-      <tr class="data_2">
-        <td class="subdiv flex">
-          <img src="https://cdn.discordapp.com/emojis/614203000222646278.png">
-          <p class="personal_best">{{ row.personal_best }}</p>
-          <p class="personal_best_difference">{{ personalBest(row.score, row.personal_best, row.personal_best_previous, false) }}</p>
-        </td>
-      </tr>
+      <tbody>
+        <tr class="datetime created_at">
+          {{ formatDate(row.created_at) }}
+        </tr>
+        <tr class="profile gamer chart">
+          <td class="subdiv flex">
+            <img class="gamer.picture_path" :src="profilePicture(row.gamer.picture_path)">
+            <p class="gamer.username">{{ row.gamer.username }}</p>
+            <p class="chart">{{ row.chart.difficulty_name }} {{ row.chart.difficulty }}</p>
+          </td>
+        </tr>
+        <tr class="song">
+          <td class="subdiv flex">
+            <img class="song.cover" :src="profilePicture(row.song.cover)">
+            <p class="song.title">{{ row.song.title }} - {{ row.song.artist }}</p>
+          </td>
+        </tr>
+        <tr class="data_1">
+          <td class="subdiv flex">
+            <img class="grade cleared" :src="grade(row.grade, row.cleared)">
+            <p class="score">
+              <a target="_blank" :href="'https://scores.stepmaniax.com/' +  row._id ">{{ row.score }}</a>
+            </p>
+            <p>|</p>
+            <p class="perfect1">{{ row.perfect1 }}</p>
+            <p class="perfect2">{{ row.perfect2 }}</p>
+            <p class="early">{{ row.early }}</p>
+            <p class="late">{{ row.late }}</p>
+            <p class="miss">{{ formatNull(row.miss) }}</p>
+            <p class="green">{{ row.green }}</p>
+            <p class="yellow">{{ row.yellow }}</p>
+            <p class="red">{{ row.red }}</p>
+          </td>
+        </tr>
+        <tr class="data_2">
+          <td class="subdiv flex">
+            <img src="https://cdn.discordapp.com/emojis/614203000222646278.png">
+            <p class="personal_best">{{ row.personal_best }}</p>
+            <p class="personal_best_difference">{{ personalBest(row.score, row.personal_best, row.personal_best_previous, false) }}</p>
+          </td>
+        </tr>
+      </tbody>
     </table>
   </tr>
 </template>
