@@ -36,7 +36,18 @@ export function profilePicture(link){
   else{
     return 'https://data.stepmaniax.com/' + link
   }
+}
 
+export function grade(grade, cleared){
+  grade = 7 - grade
+  let icon = "https://smx.573.no/img/grades/"
+  if(cleared){
+    icon += grade + ".png"
+  }
+  else{
+    icon += "f" + grade + ".png"
+  }
+  return icon
 }
 </script>
 
@@ -135,8 +146,8 @@ function getQueryParams(key){
         <p class="chart.difficulty flex">{{ row.chart.difficulty }}</p>
       </div>
     </td>
-    <td class="grade">{{ row.grade }}</td>
-    <td class="score">{{ row.score }}</td>
+    <td class="grade"><img class="grade" :src="grade(row.grade, row.cleared)"></td>
+    <td class="score"><a target="_blank" :href="'https://scores.stepmaniax.com/' +  row._id ">{{ row.score }}</a></td>
     <td class="perfect1">{{ row.perfect1 }}</td>
     <td class="perfect2">{{ row.perfect2 }}</td>
     <td class="early">{{ row.early }}</td>
@@ -147,7 +158,34 @@ function getQueryParams(key){
     <td class="red">{{ row.red }}</td>
   </tr>
 
+  <!-- Mobile Layout -->
   <tr v-for="(row, index) in rows" :key="index" id="mobile-layout">
+    <table>
+      <tr class="datetime created_at">
+        {{ formatDate(row.created_at) }}
+      </tr>
+      <tr class="profile gamer">
+        <td class="subdiv flex">
+          <img class="gamer.picture_path" :src="profilePicture(row.gamer.picture_path)">
+          <p class="gamer.username">{{ row.gamer.username }}</p>
+        </td>
+      </tr>
+      <tr class="song">
+        <td class="subdiv flex">
+          <img class="song.cover" :src="profilePicture(row.song.cover)">
+          <p class="song.title">{{ row.song.title }} - {{ row.song.artist }}</p>
+        </td>
+      </tr>
+      <tr class="data_1">
+        <td class="subdiv flex">
+          <img class="grade cleared" :src="grade(row.grade, row.cleared)">
+          <p class="score">
+            <a target="_blank" :href="'https://scores.stepmaniax.com/' +  row._id ">{{ row.score }}</a>
+          </p>
+        </td>
+      </tr>
+    </table>
+    <!--
     <td class="datetime created_at">{{ formatDate(row.created_at) }}</td>
     <td class="profile gamer">
       <div class="subdiv">
@@ -169,7 +207,7 @@ function getQueryParams(key){
     </td>
     <td class="score">
       {{ row.score }}
-    </td>
+    </td>-->
   </tr>
 </template>
 
@@ -177,8 +215,11 @@ function getQueryParams(key){
 @import '../../../assets/base.css';
 
 
-div.flex {
+.flex {
   display: flex;
+}
+a{
+  text-decoration: none;
 }
 p {
   margin: auto 0;
@@ -240,13 +281,18 @@ img {
   #mobile-layout{
     display: table
   }
-  td{
-    width: 20%;
-    margin: 5%;
-    overflow-y: hidden;
+  table{
+    width: 90vw;
+    border: 2px solid var(--dark-3);
+    border-radius: 10px;
   }
-  td.score{
-    text-align: left;
+  tr{
+    width: 100%;
+  }
+  tr.datetime{
+    text-align: center;
+    font-weight: 800;
+    font-size: 12px;
   }
 }
 </style>

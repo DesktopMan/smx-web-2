@@ -213,4 +213,10 @@ input{
 #dataAmount{
   padding: 5px;
 }
+
+@media only screen and (max-width: 1000px){
+  .main{
+    display: none;
+  }
+}
 </style>
