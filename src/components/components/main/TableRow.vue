@@ -110,7 +110,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     //#region Update Data
   document.addEventListener("updateTable", (event) => {
-    fetchData(event.detail.query)
+    if(event.detail.query){
+      fetchData(event.detail.query)
+    }
+    else{
+      fetchData(null)
+    }
   })
 
   //#endregion

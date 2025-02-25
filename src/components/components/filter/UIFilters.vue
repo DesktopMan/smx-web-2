@@ -137,13 +137,15 @@ document.addEventListener("DOMContentLoaded", () => {
     dataLength.value = 100
   })
 
-  /*  // Update '_take' from URL
+    // Update '_take' from URL
   let fullParams = getQueryParams("q")
   if(fullParams != null){
     fullParams = '{' + fullParams + '}'
   }
   fullParams = JSON.parse(fullParams)
-  dataLength.value = parseInt(decodeURIComponent(fullParams['_take']))*/
+  dataLength.value = parseInt(decodeURIComponent(fullParams['_take']).replaceAll('"', "").replaceAll("{", "").replaceAll("}", "").replaceAll("[","").replaceAll("]",""))
+  const updateEvent = new CustomEvent("updateTable")
+  document.dispatchEvent(updateEvent)
 
 
 
