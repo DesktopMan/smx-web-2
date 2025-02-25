@@ -49,6 +49,34 @@ export function grade(grade, cleared){
   }
   return icon
 }
+
+export function formatNull(number){
+  if(!number){
+    return 0
+  }
+  else{
+    return number
+  }
+}
+
+export function personalBest(score, pb, pbp){
+  let difference
+  if(score === pb){
+    difference = pb - pbp
+  }
+  else{
+    difference = score - pb
+  }
+
+  if(difference != pb){
+    if (difference > 0){
+      return "+"+difference
+    }
+    else{
+      return difference
+    }
+  }
+}
 </script>
 
 <script setup lang="ts">
@@ -164,10 +192,11 @@ function getQueryParams(key){
       <tr class="datetime created_at">
         {{ formatDate(row.created_at) }}
       </tr>
-      <tr class="profile gamer">
+      <tr class="profile gamer chart">
         <td class="subdiv flex">
           <img class="gamer.picture_path" :src="profilePicture(row.gamer.picture_path)">
           <p class="gamer.username">{{ row.gamer.username }}</p>
+          <p class="chart">{{ row.chart.difficulty_name }} {{ row.chart.difficulty }}</p>
         </td>
       </tr>
       <tr class="song">
@@ -182,6 +211,22 @@ function getQueryParams(key){
           <p class="score">
             <a target="_blank" :href="'https://scores.stepmaniax.com/' +  row._id ">{{ row.score }}</a>
           </p>
+          <p>|</p>
+          <p class="perfect1">{{ row.perfect1 }}</p>
+          <p class="perfect2">{{ row.perfect2 }}</p>
+          <p class="early">{{ row.early }}</p>
+          <p class="late">{{ row.late }}</p>
+          <p class="miss">{{ formatNull(row.miss) }}</p>
+          <p class="green">{{ row.green }}</p>
+          <p class="yellow">{{ row.yellow }}</p>
+          <p class="red">{{ row.red }}</p>
+        </td>
+      </tr>
+      <tr class="data_2">
+        <td class="subdiv flex">
+          <img src="https://cdn.discordapp.com/emojis/614203000222646278.png">
+          <p class="personal_best">{{ row.personal_best }}</p>
+          <p class="personal_best_difference">{{ personalBest(row.score, row.personal_best, row.personal_best_previous) }}</p>
         </td>
       </tr>
     </table>
@@ -275,7 +320,7 @@ img {
   }
 
   *{
-    font-size: 10px;
+    font-size: 12px;
     text-align: center;
   }
   #mobile-layout{
@@ -292,7 +337,17 @@ img {
   tr.datetime{
     text-align: center;
     font-weight: 800;
-    font-size: 12px;
+  }
+  p.chart{
+    width: 100%;
+    text-align: right;
+  }
+  p.personal_best{
+    color: gold;
+  }
+  p.personal_best_difference{
+    width: 100%;
+    text-align: right;
   }
 }
 </style>
