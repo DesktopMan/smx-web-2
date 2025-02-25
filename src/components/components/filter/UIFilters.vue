@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { url } from 'inspector';
+
 //import TableItem from '@/components/components/main/TableItem.vue'
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -116,16 +118,45 @@ document.addEventListener("DOMContentLoaded", () => {
     q = JSON.parse(q)
 
     q["_take"] = parseInt(dataLength.value)
+    let finished = JSON.stringify(q).slice(1,-1)
     
-    qid.innerHTML = JSON.stringify(q).slice(1,-1)
-    const updateEvent = new CustomEvent("updateTable")
+    qid.innerHTML = finished
+    const updateEvent = new CustomEvent("updateTable", {
+      detail: {
+        query: finished
+      }
+    })
     document.dispatchEvent(updateEvent)
+    let urlFinished = q
+    urlFinished['_take'] = "["+urlFinished['_take']+"]"
+    urlFinished = JSON.stringify(urlFinished).slice(1, -1)
+    updateUrl('q', urlFinished)
   })
 
   document.addEventListener("clearEvent", ()=> {
     dataLength.value = 100
   })
 
+  /*  // Update '_take' from URL
+  let fullParams = getQueryParams("q")
+  if(fullParams != null){
+    fullParams = '{' + fullParams + '}'
+  }
+  fullParams = JSON.parse(fullParams)
+  dataLength.value = parseInt(decodeURIComponent(fullParams['_take']))*/
+
+
+
+  function updateUrl(key, value){
+    const url = new URL(window.location.href)
+    url.searchParams.set(key, value)
+
+    window.history.replaceState({}, "", url.toString())
+  }
+  function getQueryParams(key){
+    const url = new URL(window.location.href)
+    return url.searchParams.get(key)
+  }
 })
 </script>
 

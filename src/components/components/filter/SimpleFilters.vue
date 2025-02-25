@@ -307,7 +307,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   //#endregion
 
-  //#region namelate
+  //#region SideColon
   const sideCols = Array.from(document.getElementsByClassName("inputMenu") as HTMLCollectionOf<HTMLDivElement>)
     for (const sideCol of sideCols){
       const parent = sideCol.parentElement
