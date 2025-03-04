@@ -320,12 +320,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   //#region Update fields from from URL
   let fullParams = getQueryParams("q")
-  //fullParams = JSON.parse(fullParams)
-  let containsTagFields = false;
+  if(fullParams != null){
+    fullParams = '{' + fullParams + '}'
+  }
+  fullParams = JSON.parse(fullParams)
 
   for (const tag of fullTags){
     if(fullParams[tag.getAttribute("name")]){
-      containsTagFields = true
       let value = JSON.stringify(fullParams[tag.getAttribute("name")])
       value = decodeURIComponent(value)
       let ops = {
@@ -338,7 +339,7 @@ document.addEventListener('DOMContentLoaded', () => {
       for (const op in ops){
         value = value.replaceAll(op, ops[op])
       }
-      value = JSON.parse(`{${value}}`)
+      value = value.replaceAll('"', "").replaceAll("{", "").replaceAll("}", "").replaceAll("[","").replaceAll("]","")
 
 
       const parent = tag.parentNode
