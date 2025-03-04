@@ -115,24 +115,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
     //#region Update Data
   document.addEventListener("updateTable", (event) => {
-    console.log("Recieved event")
     if(event.detail.query){
       fetchData(event.detail.query)
+      qid.innerHTML = event.detail.query
     }
     else{
       fetchData(null)
+      qid.innerHTML = ""
     }
   })
 
   //#endregion
 
   const refreshButton = document.getElementById('refresh-button') as HTMLButtonElement
+  let rQuery = getQueryParams("q")
+  rQuery = JSON.parse(`{${decodeURIComponent(rQuery)}}`)
   refreshButton.addEventListener("click", () => {
-    if(qid.innerHTML === ""){
+    if(!rQuery){
       fetchData(null)
     }
     else{
-      fetchData(qid.getHTML().toString())
+      fetchData(JSON.stringify(rQuery).slice(1,-1))
     }
   })
 

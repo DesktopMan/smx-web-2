@@ -121,7 +121,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const dataLength = document.getElementById("dataLength") as HTMLInputElement
     const group_input = document.getElementById('group-by') as HTMLInputElement
 
-  const qid = document.getElementById('q') as HTMLElement;
   let q: Array<object> = [];
 
   // Adds Tagify to each tag-input, and eventListener for changes
@@ -296,7 +295,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   updateUrl("q", urlReady)
 
-  qid.innerHTML = finished
+  //qid.innerHTML = finished
   const updateEvent = new CustomEvent("updateTable", {
     detail: {
       query: finished 
@@ -381,7 +380,12 @@ document.addEventListener('DOMContentLoaded', () => {
     for (const e of datetimeInputs){
       e.value = null
     }
-    qid.innerHTML = ""
+    const updateClear = new CustomEvent("updateTable", {
+      detail:{
+        query: null
+      }
+    })
+    document.dispatchEvent(updateClear)
     updateUrl("q", "")
   })
   //#endregion
@@ -527,9 +531,9 @@ function getQueryParams(key){
 <style scoped>
 @import '../../../assets/base.css';
 
-/*#q{
+#q{
   display: none;
-}*/
+}
 
 div{
   display: flex;

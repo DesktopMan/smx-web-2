@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
     let page = 1;
     const switchPage = Array.from(document.getElementsByClassName('switch-page') as HTMLCollectionOf<HTMLButtonElement>);
         const dataLength = document.getElementById('dataLength') as HTMLInputElement;
-        const qid = document.getElementById('q') as HTMLElement;
         const pageDisplay = document.getElementById('pageDisplay') as HTMLElement;
 
         pageDisplay.innerHTML = "Page " + page
@@ -12,8 +11,8 @@ document.addEventListener('DOMContentLoaded', ()=>{
     for (const e of switchPage){
         e.addEventListener("click", ()=> {
             let length = parseInt(dataLength.value)
-            let q = "{" + qid.getHTML().toString() + "}"
-            q = JSON.parse(q)
+            let q = getQueryParams("q")
+            q = JSON.parse(`{${decodeURIComponent(q)}}`)
 
             let skip = 0;
 
@@ -38,7 +37,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
             
             let finished = JSON.stringify(q).slice(1,-1)
-            qid.innerHTML = finished
             const updateEvent = new CustomEvent("updateTable", {
               detail: {
                 query: finished 
@@ -67,6 +65,11 @@ document.addEventListener('DOMContentLoaded', ()=>{
             pageIsFilled = true
         }
     })
+
+    function getQueryParams(key){
+    const url = new URL(window.location.href)
+    return url.searchParams.get(key)
+  }
 })
 </script>
 

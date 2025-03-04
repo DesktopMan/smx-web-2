@@ -111,16 +111,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Decide Data Length
   const dataLength = document.getElementById("dataLength") as HTMLInputElement;
-  const qid = document.getElementById('q') as HTMLElement;
 
   dataLength.addEventListener("change", ()=>{
-    let q = "{" + qid.getHTML().toString() + "}"
-    q = JSON.parse(q)
+    let q = getQueryParams("q")
+    q = JSON.parse(`{${decodeURIComponent(q)}}`)
 
     q["_take"] = parseInt(dataLength.value)
     let finished = JSON.stringify(q).slice(1,-1)
-    
-    qid.innerHTML = finished
+
     const updateEvent = new CustomEvent("updateTable", {
       detail: {
         query: finished

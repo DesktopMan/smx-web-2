@@ -4,7 +4,6 @@ import TableRow from './TableRow.vue'
 
 document.addEventListener('DOMContentLoaded', () => {
   const headers = Array.from(document.getElementsByClassName('displayHeader') as HTMLCollectionOf<HTMLElement>)
-    const qid = document.getElementById('q') as HTMLElement
   for (const h of headers){
     h.addEventListener("click", () => {
       let name = h.getAttribute("name").slice(2)
@@ -13,8 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function updateSorting(name:string){
-    let q = "{" + qid.getHTML().toString() + "}"
-    q = JSON.parse(q)
+    let q = getQueryParams("q")
+    q = JSON.parse(`{${decodeURIComponent(q)}}`)
 
     let oldName = q['_sort_by']
     q['_sort_by'] = name
@@ -26,7 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     let finished = JSON.stringify(q).slice(1,-1)
-    qid.innerHTML = finished
     const updateEvent = new CustomEvent("updateTable", {
       detail: {
         query: finished 
@@ -41,6 +39,10 @@ function updateUrl(key, value){
     url.searchParams.set(key, value)
 
     window.history.replaceState({}, "", url.toString())
+  }
+  function getQueryParams(key){
+    const url = new URL(window.location.href)
+    return url.searchParams.get(key)
   }
 
 </script>
