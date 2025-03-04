@@ -349,6 +349,7 @@ td.personal_best_difference{
     width: 100%;
   }
   .mobile-data > div.datetime, .mobile-data > div.profile, .mobile-data > div.song, div.data_1{
+    width: 90vw;
     padding-bottom: 3px;
     margin-bottom: 5px;
     border-bottom: solid 1px var(--dark-3);
