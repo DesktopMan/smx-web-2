@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { url } from 'inspector';
+import { queryObjects } from 'v8';
 
 //import TableItem from '@/components/components/main/TableItem.vue'
 
@@ -143,8 +144,16 @@ document.addEventListener("DOMContentLoaded", () => {
     fullParams = '{' + fullParams + '}'
   }
   fullParams = JSON.parse(fullParams)
-  dataLength.value = parseInt(decodeURIComponent(fullParams['_take']).replaceAll('"', "").replaceAll("{", "").replaceAll("}", "").replaceAll("[","").replaceAll("]",""))
-  const updateEvent = new CustomEvent("updateTable")
+  let query = parseInt(decodeURIComponent(fullParams).replaceAll('"', "").replaceAll("{", "").replaceAll("}", "").replaceAll("[","").replaceAll("]",""))
+  if (!query['_take'] || query['_take'] == 0){
+    query['_take'] = 100
+  }
+  dataLength.value = query['_take']
+  const updateEvent = new CustomEvent("updateTable", {
+    detail: {
+      query: query
+    }
+  })
   document.dispatchEvent(updateEvent)
 
 
