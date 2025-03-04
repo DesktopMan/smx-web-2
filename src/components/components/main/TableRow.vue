@@ -331,7 +331,7 @@ td.personal_best_difference{
   table, tr, td{
     margin: 0;
     padding: 0;
-    width: 100vw;
+    width: 95vw;
     border-collapse: collapse;
     border: none;
   }
