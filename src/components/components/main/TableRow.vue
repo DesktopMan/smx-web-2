@@ -106,9 +106,11 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!query)
   {
     fetchData(null)
+    updateUrl("q","")
   }
   else{
     fetchData(query)
+    updateUrl("q", encodeURIComponent(JSON.stringify(query).slice(1,-1)))
   }
 
   const qid = document.getElementById('q') as HTMLElement
