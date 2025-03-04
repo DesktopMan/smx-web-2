@@ -196,26 +196,26 @@ function getQueryParams(key){
 
   <!-- Mobile Layout -->
   <tr v-for="(row, index) in rows" :key="index" id="mobile-layout">
-    <table>
-      <tbody>
-        <tr class="datetime created_at">
+    <td>
+      <div class="mobile-data">
+        <div class="datetime created_at">
           {{ formatDate(row.created_at) }}
-        </tr>
-        <tr class="profile gamer chart">
-          <td class="subdiv flex">
+        </div>
+        <div class="profile gamer chart">
+          <div class="subdiv flex">
             <img class="gamer.picture_path" :src="profilePicture(row.gamer.picture_path)">
             <p class="gamer.username">{{ row.gamer.username }}</p>
             <p class="chart">{{ row.chart.difficulty_name }} {{ row.chart.difficulty }}</p>
-          </td>
-        </tr>
-        <tr class="song">
-          <td class="subdiv flex">
+          </div>
+        </div>
+        <div class="song">
+          <div class="subdiv flex">
             <img class="song.cover" :src="profilePicture(row.song.cover)">
             <p class="song.title">{{ row.song.title }} - {{ row.song.artist }}</p>
-          </td>
-        </tr>
-        <tr class="data_1">
-          <td class="subdiv flex">
+          </div>
+        </div>
+        <div class="data_1">
+          <div class="subdiv flex">
             <img class="grade cleared" :src="grade(row.grade, row.cleared)">
             <p class="score">
               <a target="_blank" :href="'https://scores.stepmaniax.com/' +  row._id ">{{ row.score }}</a>
@@ -229,17 +229,17 @@ function getQueryParams(key){
             <p class="green">{{ row.green }}</p>
             <p class="yellow">{{ row.yellow }}</p>
             <p class="red">{{ row.red }}</p>
-          </td>
-        </tr>
-        <tr class="data_2">
-          <td class="subdiv flex">
+          </div>
+        </div>
+        <div class="data_2">
+          <div class="subdiv flex">
             <img src="https://cdn.discordapp.com/emojis/614203000222646278.png">
             <p class="personal_best">{{ row.personal_best }}</p>
             <p class="personal_best_difference">{{ personalBest(row.score, row.personal_best, row.personal_best_previous, false) }}</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+          </div>
+        </div>
+      </div>
+    </td>
   </tr>
 </template>
 
@@ -322,19 +322,21 @@ td.personal_best_difference{
   #mobile-layout{
     display: table
   }
-  td{
-    max-width: 80vw;
-    width: 100%;
-  }
-  table{
+  div.mobile-data{
     width: 90vw;
     border: 2px solid var(--dark-3);
     border-radius: 10px;
+    padding: 5px;
   }
-  tr{
+  div.mobile-data > div{
     width: 100%;
   }
-  tr.datetime{
+  .mobile-data > div.datetime, .mobile-data > div.profile, .mobile-data > div.song, div.data_1{
+    padding-bottom: 3px;
+    margin-bottom: 5px;
+    border-bottom: solid 1px var(--dark-3);
+  }
+  div.datetime{
     text-align: center;
     font-weight: 800;
   }
