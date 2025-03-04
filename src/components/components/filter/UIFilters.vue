@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { url } from 'inspector';
-import { queryObjects } from 'v8';
 
 //import TableItem from '@/components/components/main/TableItem.vue'
 
@@ -129,7 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     document.dispatchEvent(updateEvent)
     let urlFinished = q
-    urlFinished['_take'] = "["+urlFinished['_take']+"]"
+    urlFinished['_take'] = urlFinished['_take']
     urlFinished = JSON.stringify(urlFinished).slice(1, -1)
     updateUrl('q', urlFinished)
   })
@@ -139,22 +138,14 @@ document.addEventListener("DOMContentLoaded", () => {
   })
 
     // Update '_take' from URL
-  let fullParams = getQueryParams("q")
-  if(fullParams != null){
-    fullParams = '{' + fullParams + '}'
+  let qParams = getQueryParams("q")
+  let decoded = decodeURIComponent(qParams)
+  let _query = JSON.parse(`{${decoded}}`)
+
+  if(!_query['_take']){
+    _query['_take'] = 100
   }
-  fullParams = JSON.parse(fullParams)
-  let query = parseInt(decodeURIComponent(fullParams).replaceAll('"', "").replaceAll("{", "").replaceAll("}", "").replaceAll("[","").replaceAll("]",""))
-  if (!query['_take'] || query['_take'] == 0){
-    query['_take'] = 100
-  }
-  dataLength.value = query['_take']
-  const updateEvent = new CustomEvent("updateTable", {
-    detail: {
-      query: query
-    }
-  })
-  document.dispatchEvent(updateEvent)
+  dataLength.value = _query['_take']
 
 
 

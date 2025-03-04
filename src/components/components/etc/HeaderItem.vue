@@ -11,10 +11,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
   let socket
 
   document.addEventListener("updateTable", (event) => {
-    if (event.detail.query == q){
-
-    } 
-    else{
+    if(event.detail.query != q){
       q = event.detail.query
       if(socket){
         socket.close()

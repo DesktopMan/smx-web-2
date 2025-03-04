@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { createTypeReferenceDirectiveResolutionCache } from 'typescript';
 import TableRow from './TableRow.vue'
 
 document.addEventListener('DOMContentLoaded', () => {

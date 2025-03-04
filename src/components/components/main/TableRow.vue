@@ -99,17 +99,23 @@ async function fetchData(q: any) {
   })
   document.dispatchEvent(arrayLength)
 }
-const query = getQueryParams("q")
-if (query == "" || !query)
-{
-  fetchData(null)
-}
 
 document.addEventListener("DOMContentLoaded", () => {
+  let query = getQueryParams("q")
+  query = decodeURIComponent(query)
+  if (!query)
+  {
+    fetchData(null)
+  }
+  else{
+    fetchData(query)
+  }
+
   const qid = document.getElementById('q') as HTMLElement
 
     //#region Update Data
   document.addEventListener("updateTable", (event) => {
+    console.log("Recieved event")
     if(event.detail.query){
       fetchData(event.detail.query)
     }
