@@ -328,10 +328,18 @@ td.personal_best_difference{
   #mobile-layout{
     display: table
   }
+  table, tr, td{
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    border-collapse: collapse;
+    border: none;
+  }
   div.mobile-data{
     width: 90vw;
     border: 2px solid var(--dark-3);
     border-radius: 10px;
+    margin-bottom: 5px;
     padding: 5px;
   }
   div.mobile-data > div{
@@ -343,6 +351,7 @@ td.personal_best_difference{
     border-bottom: solid 1px var(--dark-3);
   }
   div.datetime{
+    font-size: 14px;
     text-align: center;
     font-weight: 800;
   }
