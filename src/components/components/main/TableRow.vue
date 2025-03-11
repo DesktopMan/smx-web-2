@@ -134,6 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const refreshButton = document.getElementById('refresh-button') as HTMLButtonElement
   let rQuery = JSON.parse(`{${decodeURIComponent(getQueryParams("q"))}}`)
   refreshButton.addEventListener("click", () => {
+    rQuery = JSON.parse(`{${decodeURIComponent(getQueryParams("q"))}}`)
     if(!rQuery){
       fetchData(null)
     }
