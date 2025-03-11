@@ -286,13 +286,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Updates the placeholder text display
   q["_skip"] = skip
-  let finished = JSON.stringify(q)
-  finished = finished.slice(1, -1)
+  let formerURL = JSON.parse(`{${decodeURIComponent(getQueryParams("q"))}}`)
+  for(const obj in q){
+    formerURL[obj] = q[obj]
+  }
+  let finished = JSON.stringify(formerURL).slice(1, -1)
 
   // Updates URL and sends request
-  let urlReady = finished.toString()
-
-  updateUrl("q", urlReady)
+  //let urlReady = finished.toString()
+  updateUrl("q", finished)
 
   //qid.innerHTML = finished
   const updateEvent = new CustomEvent("updateTable", {

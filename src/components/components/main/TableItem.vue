@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  function updateSorting(name:string){
+  function updateSorting(name :string){
     let q = getQueryParams("q")
     q = JSON.parse(`{${decodeURIComponent(q)}}`)
 
