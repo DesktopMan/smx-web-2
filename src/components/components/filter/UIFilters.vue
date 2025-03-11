@@ -15,14 +15,14 @@ document.addEventListener("DOMContentLoaded", () => {
     if (header) {
       header.addEventListener("click", () => {
 
-        if (container.style.display === "flex") {
+        if (container.style.display === "block") {
           container.style.display = "none";
-          header.textContent = "UI Settings +";
+          header.textContent = "Extra settings +";
           mainBody.style.padding = '0px 5px 0px 5px';
         }
         else{
-          container.style.display = "flex";
-          header.textContent = "UI Settings -";
+          container.style.display = "block";
+          header.textContent = "Extra settings -";
           mainBody.style.padding = '0px 5px 5px 5px';
         }
       });
@@ -157,14 +157,66 @@ document.addEventListener("DOMContentLoaded", () => {
     const url = new URL(window.location.href)
     return url.searchParams.get(key)
   }
+
+
+  // Open socket to ocr
+  const ocrInput = document.getElementById("ocr-id") as HTMLInputElement
+  const ocrButton = document.getElementById("ocr-button") as HTMLButtonElement
+  let ocrUpdate = false
+  let ocrurl = "https://smx.573.no/api/machines/"
+  let socket
+
+  ocrButton.addEventListener("click", ()=>{
+    let id = ocrInput.value
+    if(!ocrUpdate){
+      socket = new WebSocket(ocrurl + id)
+
+      socket.onopen = function(){
+        console.log("Socket opened to: " + ocrurl + id)
+        ocrButton.innerHTML = "Close socket"
+        ocrUpdate = true
+      }
+      socket.onclose = function(){
+        console.log("Socket closed")
+        ocrButton.innerHTML = "Open socket"
+        ocrUpdate = false
+      }
+      socket.onerror = function(error){
+        console.log("Socket error: " + error)
+      }
+      socket.onmessage = function(){
+        let q = decodeURIComponent(getQueryParams("q"))
+        const updateEvent = new CustomEvent("updateTable", {
+          detail: {
+            query: q
+          }
+        })
+        document.dispatchEvent(updateEvent)
+        console.log("Message recived. Data updated.")
+      }
+    }
+    else{
+      socket.close()
+      socket = null
+    }
+    
+  })
+
+  ocrInput.addEventListener("change", ()=>{
+    if(ocrUpdate){
+      socket.close()
+      socket = null
+    }
+  })
 })
 </script>
 
 <template>
   <div class="main" id="main-ui-container">
-    <h3 id="header">UI Settings +</h3>
+    <h3 id="header">Extra settings +</h3>
     <div id="div-ui">
-      <div class="component" id="datetime">
+      <div class="flex">
+        <div class="component" id="datetime">
         <p>Date & Time</p>
       </div>
       <div class="component" id="profile">
@@ -194,6 +246,14 @@ document.addEventListener("DOMContentLoaded", () => {
       <div class="component" id="dataAmount">
         <input type="number" name="dataLength" id="dataLength" value="100" min="1" max="100">
       </div>
+      </div>
+      <br>
+      <div class="ocr machine flex">
+        <div class="component">
+          <input type="text" name="ocr-id" id="ocr-id" placeholder="Machine ID . . .">
+        </div>
+        <button class="component" id="ocr-button">Open socket</button>
+      </div>
     </div>
   </div>
 </template>
@@ -210,12 +270,15 @@ h3{
   border-radius: 5px;
   padding: 0px 5px 0px 5px;
 }
+.flex{
+  display: flex;
+  flex-direction: row;
+}
 #div-ui{
   padding: 5px;
   border-radius: 15px;
   background-color: var(--dark-2);
   display: none;
-  flex-direction: row;
 }
 .component{
   font-size: 12px;
@@ -240,6 +303,17 @@ input{
 }
 #dataAmount{
   padding: 5px;
+}
+.ocr > div.component{
+  padding: 1px;
+  padding-right: 5px;
+  margin-right: 0;
+}
+#ocr-id{
+  width: 100%;
+}
+#ocr-id::placeholder{
+  color: darkgray;
 }
 
 @media only screen and (max-width: 1000px){
