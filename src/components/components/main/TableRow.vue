@@ -110,7 +110,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   else{
     fetchData(query)
-    updateUrl("q", encodeURIComponent(JSON.stringify(query).slice(1,-1)))
+    updateUrl("q", encodeURIComponent(query))
   }
 
   const qid = document.getElementById('q') as HTMLElement
@@ -119,10 +119,12 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("updateTable", (event) => {
     if(event.detail.query){
       fetchData(event.detail.query)
+      updateUrl("q", encodeURIComponent(event.detail.query))
       qid.innerHTML = event.detail.query
     }
     else{
       fetchData(null)
+      updateUrl("q", "")
       qid.innerHTML = ""
     }
   })
@@ -130,8 +132,7 @@ document.addEventListener("DOMContentLoaded", () => {
   //#endregion
 
   const refreshButton = document.getElementById('refresh-button') as HTMLButtonElement
-  let rQuery = getQueryParams("q")
-  rQuery = JSON.parse(`{${decodeURIComponent(rQuery)}}`)
+  let rQuery = JSON.parse(`{${decodeURIComponent(getQueryParams("q"))}}`)
   refreshButton.addEventListener("click", () => {
     if(!rQuery){
       fetchData(null)

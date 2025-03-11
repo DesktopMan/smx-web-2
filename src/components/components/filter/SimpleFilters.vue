@@ -234,7 +234,6 @@ document.addEventListener('DOMContentLoaded', () => {
           }
 
           if(JSON.stringify(finalValue) === '{}'){
-            value = encodeURIComponent(value)
             if(parseInt(value) == value){
               value = parseInt(value)
             }
@@ -319,10 +318,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   //#region Update fields from from URL
   let fullParams = getQueryParams("q")
-  if(fullParams != null){
-    fullParams = '{' + fullParams + '}'
-  }
-  fullParams = JSON.parse(fullParams)
+  fullParams = JSON.parse(`{${decodeURIComponent(fullParams)}}`)
 
   for (const tag of fullTags){
     if(fullParams[tag.getAttribute("name")]){
