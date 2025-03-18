@@ -28,9 +28,19 @@ document.addEventListener("DOMContentLoaded", ()=> {
         const selected = Array.from(document.getElementsByClassName("tr-selected"))
             let ids = []
             for(const tr of selected){
-                for(const child of tr.children){
-                    if(child.classList.contains("score")){
-                        ids.push(child.getAttribute("id"))
+                if(tr.classList.contains("pc-layout")){
+                    for(const child of tr.children){
+                        if(child.classList.contains("score")){
+                            ids.push(child.getAttribute("id"))
+                        }
+                    }
+                }
+                else{
+                    const childList = tr.firstChild.firstChild as HTMLElement
+                    for(const child of childList.children){
+                        if(child.classList.contains("data_1")){
+                            ids.push(child.getAttribute("id"))
+                        }
                     }
                 }
             }
