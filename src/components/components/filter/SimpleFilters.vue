@@ -88,12 +88,9 @@ document.addEventListener('DOMContentLoaded', () => {
       event.preventDefault()
       const target1 = event.target as HTMLElement
       const target2 = target1.parentElement
-      if (target2){
-        const element = target2.parentElement
-        if (element){
-          hideInputs(element)
-        }
-      }
+      const target3 = target2.parentElement
+      const element = target3.parentElement
+      hideInputs(element)
     })
   }
 
