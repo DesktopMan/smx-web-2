@@ -25,7 +25,10 @@ document.addEventListener('DOMContentLoaded', () => {
     'scoreInput',
     'gradeInput',
     'chartInput',
-    'grouping'
+    'grouping',
+    'perfect1Input',
+    'perfect2Input',
+    'earlyInput'
   ]
   const startInputs = [
     allInputs[1],
@@ -510,6 +513,32 @@ function getQueryParams(key){
           <button class="exit">x</button>
         </div>
       </div>
+
+      <div id="perfect1Input">
+        <input type="text" name="perfect1" id="perfect1" placeholder="Perfect!!" class="tags tagify__input">
+        <div class="flex-col inputMenu">
+            <button id="gradeButton">?</button>
+            <button class="exit">x</button>
+          </div>
+      </div>
+
+      <div id="perfect2Input">
+        <input type="text" name="perfect2" id="perfect2" placeholder="Perfect" class="tags tagify__input">
+        <div class="flex-col inputMenu">
+            <button id="gradeButton">?</button>
+            <button class="exit">x</button>
+          </div>
+      </div>
+
+      <div id="earlyInput">
+        <input type="text" name="early" id="early" placeholder="Early" class="tags tagify__input">
+        <div class="flex-col inputMenu">
+            <button id="gradeButton">?</button>
+            <button class="exit">x</button>
+          </div>
+      </div>
+
+
     </div>
     
     <div class="select-filters">
@@ -524,6 +553,9 @@ function getQueryParams(key){
         <option value="gradeInput">Grade</option>
         <option value="chartInput">Difficulty</option>
         <option value="grouping">Grouping</option>
+        <option value="perfect1Input">Perfect!!</option>
+        <option value="perfect2Input">Perfect</option>
+        <option value="earlyInput">Early</option>
       </select>
     </div>
     
