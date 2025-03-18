@@ -168,7 +168,7 @@ function getQueryParams(key){
 
 <template>
   <!-- PC-Layout -->
-  <tr v-for="(row, index) in rows" :key="index" id="pc-layout">
+  <tr v-for="(row, index) in rows" :key="index" class="pc-layout">
     <td class="datetime created_at">{{ formatDate(row.created_at) }}</td>
     <td class="profile gamer">
       <div class="subdiv flex">
@@ -208,7 +208,7 @@ function getQueryParams(key){
   </tr>
 
   <!-- Mobile Layout -->
-  <tr v-for="(row, index) in rows" :key="index" id="mobile-layout">
+  <tr v-for="(row, index) in rows" :key="index" class="mobile-layout">
     <td>
       <div class="mobile-data">
         <div class="datetime created_at">
@@ -320,11 +320,11 @@ td.personal_best_difference{
 }
 
 
-#mobile-layout{
+.mobile-layout{
   display: none;
 }
 @media only screen and (max-width: 1000px){
-  #pc-layout{
+  .pc-layout{
     display: none;
   }
 
@@ -332,7 +332,7 @@ td.personal_best_difference{
     font-size: 12px;
     text-align: center;
   }
-  #mobile-layout{
+  .mobile-layout{
     display: table
   }
   table, tr, td{

@@ -19,6 +19,10 @@ a{
 a:hover{
   background-color: darkslateblue;
 }
+td, th{
+  border: none;
+  margin: 0px;
+}
 
 /* Tagify */
 .tagify{
@@ -76,6 +80,10 @@ a:hover{
   cursor: pointer;
   transition: 0.5s;
   overflow: visible;
+}
+
+.tr-selected{
+  background-color: #3c3c3c ;
 }
 
 @media only screen and (max-width: 1000px){

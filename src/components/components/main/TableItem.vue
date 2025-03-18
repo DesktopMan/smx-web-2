@@ -51,7 +51,7 @@ function updateUrl(key, value){
   <div class="main-display">
     <table>
       <thead>
-      <tr>
+      <tr id="tr-header">
         <th id="datetimeDisplay" class="datetime displayHeader" name="h_created_at">
           Datetime
         </th>

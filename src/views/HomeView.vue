@@ -4,6 +4,7 @@ import HeaderItem from '../components/components/etc/HeaderItem.vue'
 import TableItem from '../components/components/main/TableItem.vue'
 import UIFilters from '../components/components/filter/UIFilters.vue'
 import Skip from '../components/components/main/Skip.vue';
+import Grapher from '../components/components/etc/Grapher.vue';
 </script>
 
 <template>
@@ -11,6 +12,7 @@ import Skip from '../components/components/main/Skip.vue';
     <!--<a href="https://github.com/DesktopMan/smx-api-docs?tab=readme-ov-file">SMX API Docs</a>
   --><HeaderItem />
     <SimpleFilters />
+    <Grapher />
     <UIFilters />
     <TableItem />
     <Skip />
