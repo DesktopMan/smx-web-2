@@ -195,7 +195,7 @@ function getQueryParams(key){
       </div>
     </td>
     <td class="grade"><img class="grade" :src="grade(row.grade, row.cleared)"></td>
-    <td class="score"><a target="_blank" :href="'https://scores.stepmaniax.com/' +  row._id ">{{ row.score }}</a></td>
+    <td class="score" :id="row._id"><a target="_blank" :href="'https://scores.stepmaniax.com/' +  row._id ">{{ row.score }}</a></td>
     <td class="perfect1">{{ row.perfect1 }}</td>
     <td class="perfect2">{{ row.perfect2 }}</td>
     <td class="early">{{ row.early }}</td>
@@ -227,7 +227,7 @@ function getQueryParams(key){
             <p class="song.title">{{ row.song.title }} - {{ row.song.artist }}</p>
           </div>
         </div>
-        <div class="data_1">
+        <div class="data_1" :id="row._id">
           <div class="subdiv flex">
             <img class="grade cleared" :src="grade(row.grade, row.cleared)">
             <p class="score">

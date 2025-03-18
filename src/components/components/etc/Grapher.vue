@@ -1,5 +1,6 @@
 <script setup lang="ts">
 document.addEventListener("DOMContentLoaded", ()=> {
+    //#region Select rows
     const table = document.querySelector("table")
     table.addEventListener("click", (event)=>{
         let tr = event.target as HTMLTableRowElement
@@ -16,6 +17,36 @@ document.addEventListener("DOMContentLoaded", ()=> {
             }
         }
     })
+    //#endregion
+
+    const collage = document.getElementById("collage") as HTMLButtonElement
+    const graph = document.getElementById("graph") as HTMLButtonElement
+    const histogram = document.getElementById("histogram") as HTMLButtonElement
+    const clear = document.getElementById("clear") as HTMLButtonElement
+
+    function openTab(name){
+        const selected = Array.from(document.getElementsByClassName("tr-selected"))
+            let ids = []
+            for(const tr of selected){
+                for(const child of tr.children){
+                    if(child.classList.contains("score")){
+                        ids.push(child.getAttribute("id"))
+                    }
+                }
+            }
+        window.open("https://smx.573.no/"+name+"?scores="+ids)
+    }
+
+    collage.addEventListener("click", () => {    openTab("collage")  })
+    graph.addEventListener("click", () => {   openTab("graph")    })
+    histogram.addEventListener("click", () => {   openTab("histogram")    })
+
+    clear.addEventListener("click", () => {
+        const selected = Array.from(document.getElementsByClassName("tr-selected"))
+        for(const tr of selected){
+            tr.classList.remove("tr-selected")
+        }
+    })
 })
 </script>
 
@@ -24,7 +55,7 @@ document.addEventListener("DOMContentLoaded", ()=> {
     <div>
         <button type="button" id="collage">Collage</button>
         <button type="button" id="graph">Graph</button>
-        <button type="button" id="history">Hist.</button>
+        <button type="button" id="histogram">Hist.</button>
         <button type="button" id="clear">Clear</button>
     </div>
 </template>
@@ -46,7 +77,7 @@ button#clear{
 }
 button:hover{
     cursor: pointer;
-    padding: 15px 20px;
+    padding: 10px 20px;
     transition: 1s;
 }
 </style>
