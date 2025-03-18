@@ -184,11 +184,13 @@ document.addEventListener('DOMContentLoaded', () => {
   function updateParams(){
     let skip = q["_skip"]
     q = {}; // Resets 'q' every time function is called
+    let formerURL = JSON.parse(`{${decodeURIComponent(getQueryParams("q"))}}`)
 
     // Loops through each input field to collect the values
     for (const input of fullTags){
       // Checks if value is not empty
       if (input.value.trim() !== ""){
+        console.log(input.value.trim())
         let finalValue = {};
 
         // Parses value to JSON
@@ -250,6 +252,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         
       }
+      else{
+        delete formerURL[input.getAttribute("name")]
+      }
     }
 
     // Loops through the date-time input fields to collect the values
@@ -278,6 +283,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
          q[key] = dateValue
       }
+      else{
+        delete formerURL["created_at"]
+      }
     }
 
     if(dataLength.value != 100){
@@ -286,7 +294,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Updates the placeholder text display
   q["_skip"] = skip
-  let formerURL = JSON.parse(`{${decodeURIComponent(getQueryParams("q"))}}`)
   for(const obj in q){
     formerURL[obj] = q[obj]
   }
