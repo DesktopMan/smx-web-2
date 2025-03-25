@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
     for (const e of switchPage){
         e.addEventListener("click", ()=> {
             let length = parseInt(dataLength.value)
-            let q = getQueryParams("q")
+            let q: any = getQueryParams("q")
             q = JSON.parse(`{${decodeURIComponent(q)}}`)
 
             let skip = 0;
@@ -22,17 +22,21 @@ document.addEventListener('DOMContentLoaded', ()=>{
                 skip = (page - 1) * length;
                 
                 // Cleans up the parametres if q['_skip'] is empty
-                if (skip != 0){
-                    q['_skip'] = skip;
-                }
-                else{
-                    delete q['_skip']
+                if(q){
+                    if (skip != 0){
+                        q['_skip'] = skip as any;
+                    }
+                    else{
+                        delete q['_skip']
+                    }
                 }
             }
             else if(e.getAttribute('id') === "next-page" && page >= 1 && pageIsFilled){
                 skip = page * length;
                 page++;
-                q['_skip'] = skip;
+                if(q){
+                    q['_skip'] = skip;
+                }
             }
 
             
@@ -54,19 +58,21 @@ document.addEventListener('DOMContentLoaded', ()=>{
         pageDisplay.innerHTML = "Page " + page
     })
 
-    let pageIsFilled;
+    let pageIsFilled: any;
 
     document.addEventListener("arrayLength", (event)=>{
-        if (event.detail.dataLength < dataLength.value){
-            pageIsFilled = false
-            
-        }
-        else{
-            pageIsFilled = true
+        const customEvent = event as CustomEvent
+        if(customEvent){
+            if (customEvent.detail.dataLength < dataLength.value){
+                pageIsFilled = false        
+            }
+            else{
+                pageIsFilled = true
+            }
         }
     })
 
-    function getQueryParams(key){
+    function getQueryParams(key: any){
     const url = new URL(window.location.href)
     return url.searchParams.get(key)
   }

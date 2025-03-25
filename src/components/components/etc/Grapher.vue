@@ -2,21 +2,23 @@
 document.addEventListener("DOMContentLoaded", ()=> {
     //#region Select rows
     const table = document.querySelector("table")
-    table.addEventListener("click", (event)=>{
-        let tr = event.target as HTMLTableRowElement
-
-        if(tr.tagName != "TR"){
-            tr = tr.closest("tr")
-        }
-        if(tr.getAttribute("id") != "tr-header"){
-            if(tr.classList.contains("tr-selected")){
-                tr.classList.remove("tr-selected")
+    if(table){
+        table.addEventListener("click", (event)=>{
+            let tr: any = event.target as HTMLTableRowElement
+            
+            if(tr.tagName != "TR" && tr.closest("tr")){
+                tr = tr.closest("tr")
             }
-            else{
-                tr.classList.add("tr-selected")
+            if(tr.getAttribute("id") != "tr-header"){
+                if(tr.classList.contains("tr-selected")){
+                    tr.classList.remove("tr-selected")
+                }
+                else{
+                    tr.classList.add("tr-selected")
+                }
             }
-        }
-    })
+        })
+    }
     //#endregion
 
     const collage = document.getElementById("collage") as HTMLButtonElement
@@ -24,7 +26,7 @@ document.addEventListener("DOMContentLoaded", ()=> {
     const histogram = document.getElementById("histogram") as HTMLButtonElement
     const clear = document.getElementById("clear") as HTMLButtonElement
 
-    function openTab(name){
+    function openTab(name: any){
         const selected = Array.from(document.getElementsByClassName("tr-selected"))
             let ids = []
             for(const tr of selected){
@@ -36,10 +38,15 @@ document.addEventListener("DOMContentLoaded", ()=> {
                     }
                 }
                 else{
-                    const childList = tr.firstChild.firstChild as HTMLElement
-                    for(const child of childList.children){
-                        if(child.classList.contains("data_1")){
-                            ids.push(child.getAttribute("id"))
+                    if(tr.firstChild){
+                        const firstChild = tr.firstChild
+                        if(firstChild.firstChild){
+                            const childList = firstChild.firstChild as HTMLElement
+                            for(const child of childList.children){
+                                if(child.classList.contains("data_1")){
+                                    ids.push(child.getAttribute("id"))
+                                }
+                            }
                         }
                     }
                 }

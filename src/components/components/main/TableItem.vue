@@ -4,43 +4,51 @@ import TableRow from './TableRow.vue'
 
 document.addEventListener('DOMContentLoaded', () => {
   const headers = Array.from(document.getElementsByClassName('displayHeader') as HTMLCollectionOf<HTMLElement>)
-  for (const h of headers){
-    h.addEventListener("click", () => {
-      let name = h.getAttribute("name").slice(2)
-      updateSorting(name)
-    });
+  if(headers){
+    for (const h of headers){
+      h.addEventListener("click", () => {
+        let name = (h.getAttribute("name") ?? "").slice(2)
+        if(name){
+          updateSorting(name)
+        }
+      });
+    }
   }
 
-  function updateSorting(name :string){
-    let q = getQueryParams("q")
-    q = JSON.parse(`{${decodeURIComponent(q)}}`)
+  function updateSorting(name: any){
+    let q: any = getQueryParams("q")
+    if(q){
+      q = JSON.parse(`{${decodeURIComponent(q)}}`)
 
-    let oldName = q['_sort_by']
-    q['_sort_by'] = name
-    if(q['_order'] != 'desc' || oldName != name){
-      q['_order'] = 'desc'
-    }
-    else{
-      q['_order'] = 'asc'
-    }
+      if(q){
+        let oldName = q['_sort_by']
+        q['_sort_by'] = name as any
+        if(q['_order'] != 'desc' || oldName != name){
+          q['_order'] = 'desc'
+        }
+        else{
+          q['_order'] = 'asc'
+        }
 
-    let finished = JSON.stringify(q).slice(1,-1)
-    const updateEvent = new CustomEvent("updateTable", {
-      detail: {
-        query: finished 
+        let finished = JSON.stringify(q).slice(1,-1)
+        const updateEvent = new CustomEvent("updateTable", {
+          detail: {
+            query: finished 
+          }
+        })
+        document.dispatchEvent(updateEvent)
       }
-    })
-    document.dispatchEvent(updateEvent)
+    }
   }
 })
 
-function updateUrl(key, value){
+function updateUrl(key: any, value: any){
     const url = new URL(window.location.href)
     url.searchParams.set(key, value)
 
     window.history.replaceState({}, "", url.toString())
   }
-  function getQueryParams(key){
+  function getQueryParams(key: any){
     const url = new URL(window.location.href)
     return url.searchParams.get(key)
   }

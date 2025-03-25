@@ -1,7 +1,7 @@
 <script lang="ts">
 import icon from "../../../assets/icon.png"
 //Sends request to API
-export async function sendRequest(q: string | null) {
+/*export async function sendRequest(q: string | null) {
   let response
   let data
   if (q) {
@@ -14,9 +14,9 @@ export async function sendRequest(q: string | null) {
     data = await response.json()
   }
   return data
-}
+}*/
 
-export function formatDate(timestamp){
+export function formatDate(timestamp: any){
   var date = new Date(timestamp)
 
   const year = date.getFullYear()
@@ -29,7 +29,7 @@ export function formatDate(timestamp){
   return returner
 }
 
-export function profilePicture(link){
+export function profilePicture(link: any){
   if(!link){
     return icon
   }
@@ -38,7 +38,7 @@ export function profilePicture(link){
   }
 }
 
-export function grade(grade, cleared){
+export function grade(grade: any, cleared: any){
   grade = 7 - grade
   let icon = "https://smx.573.no/img/grades/"
   if(cleared){
@@ -50,7 +50,7 @@ export function grade(grade, cleared){
   return icon
 }
 
-export function formatNull(number){
+export function formatNull(number: any){
   if(!number){
     return 0
   }
@@ -59,8 +59,8 @@ export function formatNull(number){
   }
 }
 
-export function personalBest(score, pb, pbp, showNull){
-  let difference
+export function personalBest(score: any, pb: any, pbp: any, showNull: any){
+  let difference: any;
   if(score === pb){
     difference = pb - pbp
   }
@@ -83,11 +83,24 @@ export function personalBest(score, pb, pbp, showNull){
 </script>
 
 <script setup lang="ts">
-import { format } from 'path'
-import { sendRequest } from './TableRow.vue'
+//import { sendRequest } from './TableRow.vue'
 import { ref } from 'vue'
-import { time } from 'console'
-const rows = ref([])
+const rows = ref<any[]>([]);
+
+async function sendRequest(q: string | null) {
+  let response: any;
+  let data: any;
+  if (q) {
+    const url = `https://api.smx.573.no/scores?params={${q}}`
+    response = await fetch(url)
+  } else {
+    response = await fetch('https://api.smx.573.no/scores')
+  }
+  if (response) {
+    data = await response.json()
+  }
+  return data
+}
 
 async function fetchData(q: any) {
   const data = await sendRequest(q)
@@ -101,8 +114,8 @@ async function fetchData(q: any) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  let query = getQueryParams("q")
-  query = decodeURIComponent(query)
+  let query: any = getQueryParams("q")
+  query = decodeURIComponent(query) as any
   if (!query)
   {
     fetchData(null)
@@ -117,24 +130,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
     //#region Update Data
   document.addEventListener("updateTable", (event) => {
-    if(event.detail.query){
-      fetchData(event.detail.query)
-      updateUrl("q", encodeURIComponent(event.detail.query))
-      qid.innerHTML = event.detail.query
-    }
-    else{
-      fetchData(null)
-      updateUrl("q", "")
-      qid.innerHTML = ""
+    const customEvent = event as CustomEvent;
+    if(customEvent){
+      if(customEvent.detail.query){
+        fetchData(customEvent.detail.query)
+        updateUrl("q", encodeURIComponent(customEvent.detail.query))
+        qid.innerHTML = customEvent.detail.query
+      }
+      else{
+        fetchData(null)
+        updateUrl("q", "")
+        qid.innerHTML = ""
+      }
     }
   })
 
   //#endregion
 
   const refreshButton = document.getElementById('refresh-button') as HTMLButtonElement
-  let rQuery = JSON.parse(`{${decodeURIComponent(getQueryParams("q"))}}`)
+  let rQuery = JSON.parse(`{${decodeURIComponent(getQueryParams("q") as any)}}`)
   refreshButton.addEventListener("click", () => {
-    rQuery = JSON.parse(`{${decodeURIComponent(getQueryParams("q"))}}`)
+    rQuery = JSON.parse(`{${decodeURIComponent(getQueryParams("q") as any)}}`)
     if(!rQuery){
       fetchData(null)
     }
@@ -152,12 +168,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
 })
 
-function getQueryParams(key){
+function getQueryParams(key: any){
     const url = new URL(window.location.href)
     return url.searchParams.get(key)
   }
 
-  function updateUrl(key, value){
+  function updateUrl(key: any, value: any){
     const url = new URL(window.location.href)
     url.searchParams.set(key, value)
 

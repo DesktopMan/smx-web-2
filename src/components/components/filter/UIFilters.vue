@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { url } from 'inspector';
 
 //import TableItem from '@/components/components/main/TableItem.vue'
 
@@ -102,8 +101,6 @@ document.addEventListener("DOMContentLoaded", () => {
               }
             }
           }
-
-
         }
       });
     }
@@ -113,11 +110,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const dataLength = document.getElementById("dataLength") as HTMLInputElement;
 
   dataLength.addEventListener("change", ()=>{
-    let q = getQueryParams("q")
-    q = JSON.parse(`{${decodeURIComponent(q)}}`)
+    let q:any = getQueryParams("q")
+    q = JSON.parse(`{${decodeURIComponent(q) as any}}`)
 
-    q["_take"] = parseInt(dataLength.value)
-    let finished = JSON.stringify(q).slice(1,-1)
+    let finished: any;
+    if(q){
+      q["_take"] = parseInt(dataLength.value as any)
+      finished = JSON.stringify(q).slice(1,-1)
+    }
 
     const updateEvent = new CustomEvent("updateTable", {
       detail: {
@@ -125,20 +125,22 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     })
     document.dispatchEvent(updateEvent)
-    let urlFinished = q
-    urlFinished['_take'] = urlFinished['_take']
-    urlFinished = JSON.stringify(urlFinished).slice(1, -1)
-    updateUrl('q', urlFinished)
+    let urlFinished: any = q
+    if(urlFinished){
+      urlFinished['_take'] = urlFinished['_take'] as any
+      urlFinished = JSON.stringify(urlFinished).slice(1, -1)
+      updateUrl('q', urlFinished)
+    }
   })
 
   document.addEventListener("clearEvent", ()=> {
-    dataLength.value = 100
+    dataLength.value = "100"
   })
 
     // Update '_take' from URL
-  let qParams = getQueryParams("q")
-  let decoded = decodeURIComponent(qParams)
-  let _query = JSON.parse(`{${decoded}}`)
+  let qParams: any = getQueryParams("q")
+  let decoded: any = decodeURIComponent(qParams)
+  let _query: any = JSON.parse(`{${decoded}}`)
 
   if(!_query['_take']){
     _query['_take'] = 100
@@ -146,14 +148,13 @@ document.addEventListener("DOMContentLoaded", () => {
   dataLength.value = _query['_take']
 
 
-
-  function updateUrl(key, value){
+  function updateUrl(key: any, value: any){
     const url = new URL(window.location.href)
     url.searchParams.set(key, value)
 
     window.history.replaceState({}, "", url.toString())
   }
-  function getQueryParams(key){
+  function getQueryParams(key: any){
     const url = new URL(window.location.href)
     return url.searchParams.get(key)
   }
@@ -164,7 +165,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const ocrButton = document.getElementById("ocr-button") as HTMLButtonElement
   let ocrUpdate = false
   let ocrurl = "https://smx.573.no/api/machines/"
-  let socket
+  let socket: any
 
   ocrButton.addEventListener("click", ()=>{
     let id = ocrInput.value
@@ -181,11 +182,11 @@ document.addEventListener("DOMContentLoaded", () => {
         ocrButton.innerHTML = "Open socket"
         ocrUpdate = false
       }
-      socket.onerror = function(error){
+      socket.onerror = function(error: any){
         console.log("Socket error: " + error)
       }
       socket.onmessage = function(){
-        let q = decodeURIComponent(getQueryParams("q"))
+        let q = decodeURIComponent(getQueryParams("q") as any)
         const updateEvent = new CustomEvent("updateTable", {
           detail: {
             query: q

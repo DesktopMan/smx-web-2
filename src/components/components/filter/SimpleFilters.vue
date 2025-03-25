@@ -1,12 +1,5 @@
-
-
 <script setup lang="ts">
-import { sendRequest } from '../main/TableRow.vue';
-import Tagify from '../../../assets/tagify/src/tagify.js'
-import { babelParse } from 'vue/compiler-sfc';
-import { after } from 'node:test';
-import { url } from 'inspector';
-import { encode } from 'punycode';
+import Tagify from '@yaireo/tagify';
 
 document.addEventListener('DOMContentLoaded', () => {
   if (!getQueryParams('q')){
@@ -87,10 +80,18 @@ document.addEventListener('DOMContentLoaded', () => {
     e.addEventListener('click', (event) => {
       event.preventDefault()
       const target1 = event.target as HTMLElement
-      const target2 = target1.parentElement
-      const target3 = target2.parentElement
-      const element = target3.parentElement
-      hideInputs(element)
+      if(target1){
+        const target2 = target1.parentElement
+        if(target2){
+          const target3 = target2.parentElement
+          if(target3){
+            const element = target3.parentElement
+            if(element){
+              hideInputs(element)
+            }
+          }
+        }
+      }
     })
   }
 
@@ -116,12 +117,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   //#region  Variables for parameters and tagging system
   const tags = Array.from(document.getElementsByClassName('tags') as HTMLCollectionOf<HTMLInputElement>);
-  const fullTags = Array.from(document.querySelectorAll('input.tagify__input') as HTMLCollectionOf<HTMLInputElement>)
-  const datetimeInputs = Array.from(document.getElementsByName('created_at') as HTMLCollectionOf<HTMLInputElement>);
+  const fullTags = Array.from(document.querySelectorAll('input.tagify__input') as NodeListOf<HTMLInputElement>);
+  const datetimeInputs = Array.from(document.getElementsByName('created_at') as NodeListOf<HTMLInputElement>);
     const dataLength = document.getElementById("dataLength") as HTMLInputElement
     const group_input = document.getElementById('group-by') as HTMLInputElement
 
-  let q: Array<object> = [];
+  let q: { [key: string]: any} = {};
 
   // Adds Tagify to each tag-input, and eventListener for changes
   for (const input of tags){
@@ -129,8 +130,8 @@ document.addEventListener('DOMContentLoaded', () => {
     delimiters:",",
     pattern: null,
     mode: null,
-    tagTextProp: input.getAttribute("name"),
-    placeholder: input.getAttribute("placeholder"),
+    tagTextProp: input.getAttribute("name") as "value" | undefined,
+    placeholder: input.getAttribute("placeholder") as string | undefined,
     maxTags: Infinity,
     duplicates: false,
     userInput: true,
@@ -149,8 +150,8 @@ document.addEventListener('DOMContentLoaded', () => {
     delimiters:",",
     pattern: null,
     mode: null,
-    tagTextProp: group_input.getAttribute("name"),
-    placeholder: group_input.getAttribute("placeholder"),
+    tagTextProp: group_input.getAttribute("name") as "value" | undefined,
+    placeholder: group_input.getAttribute("placeholder") as string | undefined,
     maxTags: Infinity,
     duplicates: false,
     userInput: true,
@@ -184,26 +185,29 @@ document.addEventListener('DOMContentLoaded', () => {
   function updateParams(){
     let skip = q["_skip"]
     q = {}; // Resets 'q' every time function is called
-    let formerURL = JSON.parse(`{${decodeURIComponent(getQueryParams("q"))}}`)
+    let formerURL: { [key: string]: any};
+    formerURL = JSON.parse(`{${decodeURIComponent(getQueryParams("q") as any)}}`)
 
     // Loops through each input field to collect the values
     for (const input of fullTags){
       // Checks if value is not empty
       if (input.value.trim() !== ""){
         console.log(input.value.trim())
-        let finalValue = {};
+        let finalValue: any
+        finalValue = {};
 
         // Parses value to JSON
-        let parsed = JSON.parse(input.value);
+        let parsed: any = JSON.parse(input.value);
         
         // Deletes the "value" parameter from each parsed object
-        parsed.forEach(obj => {
+        parsed.forEach((obj: any) => {
           delete obj.value;
 
-          let key = Object.keys(obj)[0]
-          let value = String(Object.values(obj))
+          let key: any = Object.keys(obj)[0]
+          let value: any
+          value = String(Object.values(obj))
           
-          let ops = {
+          let ops: any = {
             ">=":"gte",
             "<=":"lte",
             ">":"gt",
@@ -213,7 +217,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
           for(const op in ops){
             if(value.startsWith(op)){ // ">=5000"
-              let eValue = value.replace(op, "")   // "5000"
+              let eValue: any
+              eValue = value.replace(op, "")   // "5000"
               if(parseInt(eValue) == eValue){
                 eValue = parseInt(eValue) // 5000
               }
@@ -223,16 +228,16 @@ document.addEventListener('DOMContentLoaded', () => {
               // Operator "nin" requires an array. This is made
               else{
                 if(!finalValue[ops[op]]){
-                  finalValue[ops[op]] = []
+                  finalValue[ops[op]] = [] as any
                 }
-                finalValue[ops[op]].push(eValue) // {"nin": [5000]}
+                finalValue[ops[op]].push(eValue as any) // {"nin": [5000]}
               }
               break;
             }
           }
 
-          if (!q[key]){
-            q[key] = []
+          if (q[key] === null){
+            q[key] = [] as any
           }
 
           if(JSON.stringify(finalValue) === '{}'){
@@ -253,7 +258,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
       }
       else{
-        delete formerURL[input.getAttribute("name")]
+        delete formerURL[input.getAttribute("name") as any]
       }
     }
 
@@ -261,8 +266,8 @@ document.addEventListener('DOMContentLoaded', () => {
     for (const input of datetimeInputs){
       // Checks if value is not empty
       if (input.value.trim() !== ""){
-        let dateValue = {};
-        let date = new Date(input.value)
+        let dateValue: any = {};
+        let date: any = new Date(input.value)
         date = date.toISOString()
         
         let key = "created_at"
@@ -288,14 +293,14 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    if(dataLength.value != 100){
+    if(dataLength.value != "100"){
       q["_take"] = parseInt(dataLength.value)
     }
 
   // Updates the placeholder text display
   q["_skip"] = skip
   for(const obj in q){
-    formerURL[obj] = q[obj]
+    formerURL[obj] = q[obj] as any
   }
   let finished = JSON.stringify(formerURL).slice(1, -1)
 
@@ -318,43 +323,50 @@ document.addEventListener('DOMContentLoaded', () => {
   const sideCols = Array.from(document.getElementsByClassName("inputMenu") as HTMLCollectionOf<HTMLDivElement>)
     for (const sideCol of sideCols){
       const parent = sideCol.parentElement
-      const div = parent.querySelector("tags")
-      if(div){
-        div.appendChild(sideCol)
+      if(parent){
+        const div = parent.querySelector("tags")
+        if(div){
+          div.appendChild(sideCol)
+      }
       }
     }
   //#endregion
 
   //#region Update fields from from URL
-  let fullParams = getQueryParams("q")
-  fullParams = JSON.parse(`{${decodeURIComponent(fullParams)}}`)
+  let fullParams: any = getQueryParams("q")
+  fullParams = JSON.parse(`{${decodeURIComponent(fullParams) as any}}`)
 
-  for (const tag of fullTags){
-    if(fullParams[tag.getAttribute("name")]){
-      let value = JSON.stringify(fullParams[tag.getAttribute("name")])
-      value = decodeURIComponent(value)
-      let ops = {
-        '"gte":': ">=",
-        '"lte":': "<=",
-        '"gt":': ">",
-        '"lt":': "<",
-        '"nin":': "!"
-      }
-      for (const op in ops){
-        value = value.replaceAll(op, ops[op])
-      }
-      value = value.replaceAll('"', "").replaceAll("{", "").replaceAll("}", "").replaceAll("[","").replaceAll("]","")
+  if(fullParams){
+    for (const tag of fullTags){
+      if(fullParams[tag.getAttribute("name") as any]){
+        let value: any = JSON.stringify(fullParams[tag.getAttribute("name") as any])
+        value = decodeURIComponent(value)
+        let ops: any = {
+          '"gte":': ">=",
+          '"lte":': "<=",
+          '"gt":': ">",
+          '"lt":': "<",
+          '"nin":': "!"
+        }
+        for (const op in ops){
+          value = value.replaceAll(op, ops[op])
+        }
+        value = value.replaceAll('"', "").replaceAll("{", "").replaceAll("}", "").replaceAll("[","").replaceAll("]","")
 
-
-      const parent = tag.parentNode
-      const children = Array.from(parent.children)
-      for (const child of children){
-        if (child.classList.contains("tagify")){
-          showInputs(parent)
-          const newChild = child.querySelector('span')
-          newChild.focus()
-          newChild.innerHTML = value
-          newChild.blur()
+        const parent = tag.parentElement
+        if(parent){
+          const children = Array.from(parent.children)
+          for (const child of children){
+            if (child.classList.contains("tagify")){
+              showInputs(parent)
+              const newChild = child.querySelector('span')
+              if(newChild){
+                newChild.focus()
+                newChild.innerHTML = value
+                newChild.blur()
+              }
+            }
+          }
         }
       }
     }
@@ -363,7 +375,7 @@ document.addEventListener('DOMContentLoaded', () => {
   //#endregion
 
   //#region Placeholders
-  const tagFields = Array.from(document.querySelectorAll('span.tagify__input') as HTMLCollectionOf<HTMLInputElement>)
+  const tagFields = Array.from(document.querySelectorAll('span.tagify__input') as NodeListOf<HTMLInputElement>)
   for(const t of tagFields){
     t.classList.add('placeholder')
 
@@ -379,11 +391,11 @@ document.addEventListener('DOMContentLoaded', () => {
   //#region Clear-button
   const clearButton = document.getElementById('clear-button') as HTMLButtonElement
   clearButton.addEventListener("click", () => {
-    for (const e of fullTags  ){
+    for (const e of fullTags){
       e.value = ""
     }
     for (const e of datetimeInputs){
-      e.value = null
+      e.value = ""
     }
     const updateClear = new CustomEvent("updateTable", {
       detail:{
@@ -399,18 +411,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 //#region  Sleep-function
-function sleep(ms){
+function sleep(ms: any){
   return new Promise(resolve => setTimeout(resolve, ms))
 }
 //#endregion
 
 //#region URL Query Return
-function getQueryParams(key){
+function getQueryParams(key: any){
     const url = new URL(window.location.href)
     return url.searchParams.get(key)
   }
 
-  function updateUrl(key, value){
+  function updateUrl(key: any, value: any){
     const url = new URL(window.location.href)
     url.searchParams.set(key, value)
 
